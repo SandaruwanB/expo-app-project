@@ -14,6 +14,10 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const registerNow = ()=>{
+        navigate.navigate('EmailVerify');
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>

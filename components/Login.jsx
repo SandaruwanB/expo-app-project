@@ -3,6 +3,8 @@ import { View, StyleSheet, Text, TouchableOpacity , SafeAreaView, TextInput, Key
 import { useNavigation } from '@react-navigation/core'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import MatIcon from 'react-native-vector-icons/MaterialIcons'
+import axios from 'axios'
+import config from '../apiConfig'
 
 const Login = () => {
     const navigate = useNavigation();
@@ -15,7 +17,7 @@ const Login = () => {
     const [emailErrText, setEmailErrText] = useState("");
 
 
-    const signIn = ()=>{
+    const signIn = async ()=>{
         if(email === "" && password === ""){
             setPassErr(true);
             setEmailErr(true);
@@ -40,6 +42,16 @@ const Login = () => {
                 setEmailErr(false);
                 setEmailErrText("");
                 setPassErrText("");
+
+                await axios.post(`${config.uri}/login`, {
+                    email : email,
+                    password : password
+                }).then(res=>{
+                    if(res.data.result === "notfound"){
+                        setEmailErr(true);
+                        setEmailErrText("Invalid Credentials.");
+                    }
+                })
             }
             else{
                 setPassErr(false);
@@ -89,7 +101,7 @@ const Login = () => {
             </View>
             <Text style={{fontSize: 15, fontWeight: '500', color : '#3366FF', marginTop: 40}}>Or Continue With</Text>
             <View style={{width: '65%', marginTop: 15}}>
-                <TouchableOpacity style={{backgroundColor: '#E4E9F2',padding: 8, borderRadius: 5, width : '100%'}} onPress={()=>navigate.navigate('adminPages')}>
+                <TouchableOpacity style={{backgroundColor: '#E4E9F2',padding: 8, borderRadius: 5, width : '100%'}} onPress={()=>navigate.navigate('UsersPannel')}>
                     <Icon name='google' size={30} color={'#00B383'} style={{textAlign : 'center'}}/>
                 </TouchableOpacity>
             </View>
