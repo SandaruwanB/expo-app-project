@@ -12,6 +12,7 @@ import Home from './Home'
 import Login from './Login'
 import Register from './Register'
 import EmailVerification from './EmailVerification'
+import FinalVerification from './FinalVerification'
 
 // common user
 import UserHome from './user/UserHome'
@@ -119,6 +120,7 @@ const AppNavigation = () => {
                 <Stack.Screen name='Login' component={Login} options={{headerShown : false}} />
                 <Stack.Screen name='Register' component={Register} options={{headerShown : false}} />
                 <Stack.Screen name='EmailVerify' component={EmailVerification} options={{headerShown : false}} />
+                <Stack.Screen name='FinalVerification' component={FinalVerification} options={{headerShown : false}} />
                 <Stack.Screen name='UsersPannel' component={UserBottomNav} options={{headerShown : false}} />
                 <Stack.Screen name='Messaging' component={Messaging} />
             </Stack.Navigator>
