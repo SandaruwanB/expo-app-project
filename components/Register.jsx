@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import MatIcon from 'react-native-vector-icons/MaterialIcons'
+import axios from 'axios'
+import config from '../apiConfig'
 
 const Register = () => {
     const navigate = useNavigation();
@@ -14,8 +16,55 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const registerNow = ()=>{
-        navigate.navigate('EmailVerify');
+    const registerNow = async ()=>{
+        if(email === "" && password === ""){
+            setUserErr(true);
+            setPassErr(true);
+            setUserErrMsg("Email is Required");
+            setPassErrMsg("Password is Required");
+        }
+        else if(email === ""){
+            setUserErr(true);
+            setPassErr(false);
+            setUserErrMsg("Email is Required");
+            setPassErrMsg("");
+        }
+        else if(password === ""){
+            setUserErr(false);
+            setPassErr(true);
+            setUserErrMsg("");
+            setPassErrMsg("Password is Required");
+        }
+        else{
+            if(email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+                setUserErr(false);
+                setPassErr(false);
+                setUserErrMsg("");
+                setPassErrMsg("");
+                await axios.post(`${config.uri}/register`, {
+                    email : email,
+                    password : password,
+                }).then(res=>{
+                    if(res.data.result === "available"){
+                        setUserErr(true);
+                        setUserErrMsg("This Email Allready in Use");
+                    }
+                    else{
+                        setUserErr(false);
+                        setUserErrMsg("");
+                        navigate.navigate("EmailVerify", {userId : email});
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            }
+            else{
+                setUserErr(true);
+                setPassErr(false);
+                setUserErrMsg("Invalid Email Address");
+                setPassErrMsg("");
+            }
+        }
     }
 
 

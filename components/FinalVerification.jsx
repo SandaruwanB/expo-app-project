@@ -5,7 +5,7 @@ const FinalVerification = () => {
     return (
         <View style={styles.container}>
             <Image style={styles.image} source={require('../assets/images/emailVerifyToken.png')} />
-            <Text style={styles.text}>We send a VerificationCode to Your Email. Check Your Email and Enter it to Verify your Account</Text>
+            <Text style={styles.text}>We sended a Verification Code to Your Email. Check Your Email and Enter it to Verify your Account</Text>
             <TextInput  style={styles.input} placeholder='Verification Code'/>
             <TouchableOpacity style={styles.button}>
                 <Text style={styles.btnText}>Done</Text>
