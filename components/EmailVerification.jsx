@@ -1,29 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
-import { useNavigation } from '@react-navigation/core'
-import { useRoute } from '@react-navigation/native'; 
-import axios from 'axios';
-import config from '../apiConfig';
+import React from 'react';
+import {View, StyleSheet, Image, Text, TextInput, TouchableOpacity} from 'react-native';
 
 const EmailVerification = () => {
-    const navigation = useNavigation();
-    const route = useRoute();
-    const { userId } = route.params;
-
-    const sendVerification = async ()=>{
-        await axios.post(`${config.uri}/sendverify`, {
-            email : userId,
-        }).then(res=>{
-            console.log(res.data);
-        })
-    }
-
     return (
         <View style={styles.container}>
-            <Image style={styles.image} source={require('../assets/images/emailVerification.png')} />
-            <Text style={styles.heading}>Please Verify Your Email, We will Send you a Verification Code to Your Email, Please Use the Code for Verify Your Account</Text>
-            <TouchableOpacity style={styles.button} onPress={()=>sendVerification()}>
-                <Text style={styles.btnText}>Send Verification Code</Text>
+            <Image style={styles.image} source={require('../assets/images/emailVerifyToken.png')} />
+            <Text style={styles.text}>We sended a Verification Code to Your Email. Check Your Email and Enter it to Verify your Account</Text>
+            <TextInput  style={styles.input} placeholder='Verification Code'/>
+            <TouchableOpacity style={styles.button}>
+                <Text style={styles.btnText}>Done</Text>
             </TouchableOpacity>
         </View>
     );
@@ -32,25 +17,36 @@ const EmailVerification = () => {
 const styles = StyleSheet.create({
     container : {
         flex : 1,
-        flexDirection : 'column',
         justifyContent : 'center',
         alignItems : 'center',
+        marginHorizontal : 20,
+        flexDirection : 'column',
     },
     image : {
-        width : 350,
+        width : 400,
         height : 350,
     },
-    heading : {
-        paddingHorizontal : 18, 
-        textAlign : 'center',
+    text : {
+        textAlign : "center",
         fontSize : 17,
+    },
+    input : {
+        width : '80%',
         marginTop : 30,
+        padding : 10,
+        paddingLeft : 15,
+        fontSize : 16,
+        backgroundColor : '#E4E9F2',
+        borderRadius : 5,
     },
     button : {
-        marginTop : 60,
+        marginTop : 30,
         backgroundColor : '#3366FF',
-        padding : 10,
         borderRadius : 10,
+        paddingLeft : 20,
+        paddingRight : 20,
+        paddingTop : 8,
+        paddingBottom : 8,
     },
     btnText : {
         color : '#ffffff',
