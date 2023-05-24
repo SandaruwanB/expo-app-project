@@ -52,7 +52,7 @@ const Register = () => {
                     else{
                         setUserErr(false);
                         setUserErrMsg("");
-                        navigate.navigate("EmailVerify", {userId : email});
+                        navigate.navigate("EmailVerify", {userId : email, token : res.data.token});
                     }
                 }).catch(err=>{
                     console.log(err);

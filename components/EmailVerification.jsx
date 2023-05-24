@@ -1,15 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {View, StyleSheet, Image, Text, TextInput, TouchableOpacity} from 'react-native';
+import { useRoute } from '@react-navigation/native'
+import axios from 'axios';
+import config from '../apiConfig'
 
 const EmailVerification = () => {
+    const route = useRoute();
+    const { userId } = route.params;
+    const [ err, setErr ] = useState(false);
+    const [ errText, setErrText ] = useState("");
+    const [ userToken, setUserToken ] = useState("");
+
+    const submitToken = async ()=>{
+        if(userToken === ""){
+            setErr(true);
+            setErrText("Enter Token Before Submit");
+        }
+        else{
+            setErr(false);
+            setErrText("");
+            await axios.post(`${config.uri}/verify`, {
+                token : userToken,
+                user : userId,
+            }).then(res=>{
+                if(res.data.result === "invalid"){
+                    setErr(true);
+                    setErrText("Verification Code Missmatched");
+                }
+                else{
+                    
+                }
+            })
+        }
+    }
+
+    const resendSubmit = async ()=>{
+        console.log(userToken);
+    }
+
     return (
         <View style={styles.container}>
             <Image style={styles.image} source={require('../assets/images/emailVerifyToken.png')} />
-            <Text style={styles.text}>We sended a Verification Code to Your Email. Check Your Email and Enter it to Verify your Account</Text>
-            <TextInput  style={styles.input} placeholder='Verification Code'/>
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.btnText}>Done</Text>
-            </TouchableOpacity>
+            <Text style={styles.text}>We sent your verification key to your {userId} email address. please verify your account. </Text>
+            <View style={styles.inputField}>
+                <TextInput placeholder='Verification Key' style={[styles.input, err ? styles.inputError : '']} onChangeText={(text)=>setUserToken(text)} value={userToken}/>
+                <Text style={{textAlign : 'center', color : '#B81D5B'}}>{errText}</Text>
+            </View>
+            <View style={styles.buttons}>
+                <TouchableOpacity style={styles.button} onPress={()=>submitToken()}>
+                    <Text style={styles.btnText}>Verify</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.btnText}>Resend Key</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -29,9 +73,10 @@ const styles = StyleSheet.create({
     text : {
         textAlign : "center",
         fontSize : 17,
+        marginTop : 10,
     },
     input : {
-        width : '80%',
+        width : '100%',
         marginTop : 30,
         padding : 10,
         paddingLeft : 15,
@@ -52,6 +97,18 @@ const styles = StyleSheet.create({
         color : '#ffffff',
         fontSize : 16,
         fontWeight : 'bold',
+        textAlign : 'center',
+    },
+    inputError : {
+        borderWidth : 1,
+        borderColor : '#B81D5B',
+    },
+    inputField : {
+        width : '80%',
+    },
+    buttons : {
+        width : '70%',
+        justifyContent : 'space-around',
     }
 })
 
