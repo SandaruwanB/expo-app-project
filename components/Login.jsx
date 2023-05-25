@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity , SafeAreaView, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/core'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -16,6 +16,8 @@ const Login = () => {
     const [emailErr, setEmailErr] = useState(false);
     const [passErrText, setPassErrText] = useState("");
     const [emailErrText, setEmailErrText] = useState("");
+    const [token, setTokenVal] = useState("");
+    const [role, setRole] = useState("");
 
 
     const signIn = async ()=>{
@@ -53,7 +55,7 @@ const Login = () => {
                         setEmailErrText("Invalid Credentials.");
                     }
                     else if(res.data.result === "user"){
-                        setToken();
+                        setToken("user");
                         navigate.navigate("UsersPannel");
                     }
                     else if(res.data.result === "password"){
@@ -72,9 +74,15 @@ const Login = () => {
         }
     }
 
-    const setToken = async ()=>{
-        await SecureStorage.setItemAsync("auth", email);
+    const setToken = async (role)=>{
+        try {
+            await SecureStorage.setItemAsync("auth", email);
+            await SecureStorage.setItemAsync("role", role);
+        } catch (error) {
+            console.log(error);
+        }
     }
+
 
     return (
         <SafeAreaView style={styles.container}>

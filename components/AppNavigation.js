@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
+import * as SecureStorage from 'expo-secure-store'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import MatIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FaIcon from 'react-native-vector-icons/FontAwesome'
@@ -19,6 +20,7 @@ import Notification from './user/Notifications'
 import Post from './user/Post'
 import Followers from './user/Followers'
 import Messaging from './user/Messaging'
+import { useState } from 'react'
 
 // admin user
 

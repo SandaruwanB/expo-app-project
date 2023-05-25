@@ -1,23 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import * as SecureStorage from 'expo-secure-store';
+import { useNavigation } from '@react-navigation/native';
 
 const UserHome = () => {
-    
+    const [ user, setUser ] = useState("");
+    const navigate = useNavigation();
+
     const getToken = async () =>{
-       const token = await SecureStorage.getItemAsync("auth");
-       if(token){
-        return "available";
-       }
-       else{
-        return "not available";
-       }
+        try {
+            const result = await SecureStorage.getItemAsync('auth');
+            setUser(result);
+        } catch (error) {
+            console.log(error);
+        }
     }
-    console.log(getToken());
+    getToken();
+    
+    const signOut = async ()=>{
+        try {
+            await SecureStorage.deleteItemAsync("auth");
+            await SecureStorage.deleteItemAsync("role");
+            navigate.navigate("Login");
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <View>
-            <Text></Text>
+            <Text>{user}</Text>
+            <TouchableOpacity onPress={()=>signOut()}>
+                <Text>Sign Out</Text>
+            </TouchableOpacity>
         </View>
     );
 }
