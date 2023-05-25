@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {View, StyleSheet, Image, Text, TextInput, TouchableOpacity} from 'react-native';
-import { useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import axios from 'axios';
+import * as SecureStorage from 'expo-secure-store'
 import config from '../apiConfig'
 
 const EmailVerification = () => {
     const route = useRoute();
+    const navigate = useNavigation();
     const { userId } = route.params;
     const [ err, setErr ] = useState(false);
     const [ errText, setErrText ] = useState("");
@@ -28,10 +30,15 @@ const EmailVerification = () => {
                     setErrText("Verification Code Missmatched");
                 }
                 else{
-                    
+                    setToken();
+                    navigate.navigate("UsersPannel");
                 }
             })
         }
+    }
+
+    const setToken = async ()=>{
+        await SecureStorage.setItemAsync("auth", userId);
     }
 
     const resendSubmit = async ()=>{

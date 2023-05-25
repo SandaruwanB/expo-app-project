@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/core'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import MatIcon from 'react-native-vector-icons/MaterialIcons'
 import axios from 'axios'
+import * as SecureStorage from 'expo-secure-store'
 import config from '../apiConfig'
 
 const Login = () => {
@@ -51,6 +52,14 @@ const Login = () => {
                         setEmailErr(true);
                         setEmailErrText("Invalid Credentials.");
                     }
+                    else if(res.data.result === "user"){
+                        setToken();
+                        navigate.navigate("UsersPannel");
+                    }
+                    else if(res.data.result === "password"){
+                        setPassErr(true);
+                        setPassErrText("Incorrect Password");
+                    }
                 })
             }
             else{
@@ -61,6 +70,10 @@ const Login = () => {
             }
 
         }
+    }
+
+    const setToken = async ()=>{
+        await SecureStorage.setItemAsync("auth", email);
     }
 
     return (
