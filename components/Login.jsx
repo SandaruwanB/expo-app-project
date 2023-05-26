@@ -52,7 +52,7 @@ const Login = () => {
                 }).then(res=>{
                     if(res.data.result === "notfound"){
                         setEmailErr(true);
-                        setEmailErrText("Invalid Credentials.");
+                        setEmailErrText("Account Not Found");
                     }
                     else if(res.data.result === "user"){
                         setToken("user");
