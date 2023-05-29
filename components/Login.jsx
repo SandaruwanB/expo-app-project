@@ -120,12 +120,6 @@ const Login = () => {
                     <Text style={{fontWeight: '700'}}>I do not Have an Account</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={{fontSize: 15, fontWeight: '500', color : '#3366FF', marginTop: 40}}>Or Continue With</Text>
-            <View style={{width: '65%', marginTop: 15}}>
-                <TouchableOpacity style={{backgroundColor: '#E4E9F2',padding: 8, borderRadius: 5, width : '100%'}} onPress={()=>navigate.navigate('UsersPannel')}>
-                    <Icon name='google' size={30} color={'#00B383'} style={{textAlign : 'center'}}/>
-                </TouchableOpacity>
-            </View>
         </SafeAreaView>
     );
 }
