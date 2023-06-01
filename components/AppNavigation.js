@@ -91,7 +91,7 @@ const UserBottomNav = ()=>{
                     tabBarLabel : ({focused, color})=>(
                         <Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Post' : ''}</Text>
                     ),
-                    tabBarStyle : {elevation : 0, shadowOpacity : 0, borderTopWidth : 1, borderTopColor : '#C5CEE0', height : 60},
+                    tabBarStyle : {elevation : 0, shadowOpacity : 0, borderTopWidth : 1, borderTopColor : '#C5CEE0', height : 60, display : 'none',},
                     headerShown : false,
                 }}
             />
