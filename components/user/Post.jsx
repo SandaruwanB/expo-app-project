@@ -37,7 +37,7 @@ const Post = () => {
                         iconStyle={styles.iconStyle}
                         data={data}
                         search
-                        onChange={item=>{
+                        onChange={ item => {
                             setCategory(item.value);
                         }}
                         maxHeight={300}
