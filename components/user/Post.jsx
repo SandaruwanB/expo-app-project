@@ -14,13 +14,6 @@ const Post = () => {
         { label: "UET", value: "uet" },
     ];
 
-
-    const renderItems = ()=>{
-        <View style={styles.dropdownItem}>
-            <Text style={styles.dropdownText}>{data.label}</Text>
-        </View>
-    }
-
     return (
         <View>
             <View style={styles.header}>
@@ -37,24 +30,25 @@ const Post = () => {
                 <View style={{width : '96%', marginLeft : '2%',}}>
                     <Dropdown
                         style={styles.dropdown}
+                        placeholder='What is the Category?'
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
                         inputSearchStyle={styles.inputSearchStyle}
                         iconStyle={styles.iconStyle}
                         data={data}
                         search
+                        onChange={item=>{
+                            setCategory(item.value);
+                        }}
                         maxHeight={300}
                         labelField="label"
                         valueField="value"
-                        searchPlaceholder="Search Category...."
-                        value={data}
-                        renderItem={()=>renderItems()}
+                        searchPlaceholder="Search...."
+                        value={category}
                     />
                 </View>
                 <View style={{width : '100%',}}>
                     <TextInput numberOfLines={1} placeholder='What do you want to share?' style={styles.postHeadingInput}/>
-                </View>
-                <View>
                 </View>
             </View>
         </View>
@@ -113,6 +107,14 @@ const styles = StyleSheet.create({
     dropdownText : {
         flex: 1,
         fontSize: 16,
+    },
+    placeholderStyle : {
+        color : 'rgba(143, 155, 139, 0.9)',
+        fontSize : 14,
+    },
+    inputSearchStyle : {
+        fontSize : 14,
+        borderRadius : 10,
     }
 })
 
