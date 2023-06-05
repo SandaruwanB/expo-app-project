@@ -1,10 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, TextInput} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {View, StyleSheet, Text, TouchableOpacity, TextInput, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { Dropdown } from 'react-native-element-dropdown'
 
 const Post = () => {
     const navigate = useNavigation();
+    const [category, setCategory] = useState("");
+
+    const data = [
+        { label: "PUCIT", value: "pucit" },
+        { label: "UCP", value: "ucp" },
+        { label: "UET", value: "uet" },
+    ];
+
+
+    const renderItems = ()=>{
+        <View style={styles.dropdownItem}>
+            <Text style={styles.dropdownText}>{data.label}</Text>
+        </View>
+    }
 
     return (
         <View>
@@ -19,8 +34,27 @@ const Post = () => {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <View style={{width : '96%', marginLeft : '2%',}}>
+                    <Dropdown
+                        style={styles.dropdown}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={data}
+                        search
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        searchPlaceholder="Search Category...."
+                        value={data}
+                        renderItem={()=>renderItems()}
+                    />
+                </View>
                 <View style={{width : '100%',}}>
                     <TextInput numberOfLines={1} placeholder='What do you want to share?' style={styles.postHeadingInput}/>
+                </View>
+                <View>
                 </View>
             </View>
         </View>
@@ -59,6 +93,26 @@ const styles = StyleSheet.create({
         marginLeft : '2%',
         padding : 15,
         borderRadius : 5,
+        marginTop : 10,
+    },
+    dropdown: {
+        height: 50,
+        backgroundColor: 'white',
+        borderRadius: 5,
+        padding: 15,
+    },
+    placeholderStyle: {
+        fontSize: 16,
+    },
+    dropdownItem : {
+        padding: 17,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    dropdownText : {
+        flex: 1,
+        fontSize: 16,
     }
 })
 
