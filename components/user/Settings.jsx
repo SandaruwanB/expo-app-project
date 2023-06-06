@@ -28,6 +28,17 @@ const Settings = () => {
 
     return (
         <View style={[styles.container, {maxWidth : width, maxHeight : height}]}>
+            <View style={{height : 250, width : '100%', marginTop : 30, position : 'relative',}}>
+                <View style={{width : '100%', flex : 1, alignItems : 'center'}}>
+                    <View style={{width : 140, height : 140, backgroundColor : 'red', borderRadius : 100,}}>
+                        
+                    </View>
+                    <View style={{marginTop : 15,}}>
+                        <Text style={{textAlign : 'center', fontSize : 20,}}>Sandaruwan Bandara</Text>
+                        <Text style={{textAlign : 'center', fontSize : 14,}}>sandarusbandara110@gmail.com</Text>
+                    </View>
+                </View>
+            </View>
             <TouchableOpacity style={styles.signOut} onPress={()=>changeCategory()}>
                 <Icon name='right' style={styles.signOutIcon}/>
                 <Text style={styles.signOutText}>Change Category</Text>
@@ -39,7 +50,7 @@ const Settings = () => {
             <TouchableOpacity  style={styles.signOut} onPress={()=>signOut()}>
                 <Icon name='logout' style={styles.signOutIcon}/>
                 <Text style={styles.signOutText}>Sign Out</Text>
-            </TouchableOpacity>     
+            </TouchableOpacity>
         </View>
     );
 }
@@ -65,7 +76,8 @@ const styles = StyleSheet.create({
     signOutText : {
         marginLeft : 10,
         fontSize : 14,
-    }
+    },
+
 });
 
 export default Settings;

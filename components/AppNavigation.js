@@ -35,7 +35,7 @@ const UserHeader = ()=>{
         <View style={styles.container}>
             <View style={styles.content}>
                 <View style={{position : 'relative', width : '20%'}}>
-                    <FaIcon name='user' size={30} style={{marginLeft : 30, marginTop : 20, color : '#2E3A59'}} onPress={()=>navigate.navigate('Settings')}/>
+                    <FaIcon name='user' size={30} style={{marginLeft : 30, marginTop : 20, color : '#2E3A59'}} onPress={()=>navigate.navigate('Account Settings')}/>
                 </View>
                 <View style={{position : 'relative', width: '65%'}}>
                     <TextInput style={styles.searchBar} placeholder='Search'/>
@@ -126,7 +126,7 @@ const AppNavigation = () => {
                 <Stack.Screen name='EmailVerify' component={EmailVerification} options={{headerShown : false}} />
                 <Stack.Screen name='UsersPannel' component={UserBottomNav} options={{headerShown : false}} />
                 <Stack.Screen name='Messaging' component={Messaging} />
-                <Stack.Screen name='Settings' component={Settings} />
+                <Stack.Screen name='Account Settings' component={Settings} />
                 <Stack.Screen name='Change Category' component={ChangeCategory} />
                 <Stack.Screen name='Change Password' component={ChangePassword} />
             </Stack.Navigator>
