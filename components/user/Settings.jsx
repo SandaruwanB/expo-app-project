@@ -1,6 +1,7 @@
 import React from 'react'
 import {View, StyleSheet, Text, TouchableOpacity, Dimensions} from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
+import Icon2 from 'react-native-vector-icons/FontAwesome'
 import * as SecureStorage from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
 
@@ -30,8 +31,8 @@ const Settings = () => {
         <View style={[styles.container, {maxWidth : width, maxHeight : height}]}>
             <View style={{height : 250, width : '100%', marginTop : 30, position : 'relative',}}>
                 <View style={{width : '100%', flex : 1, alignItems : 'center'}}>
-                    <View style={{width : 140, height : 140, backgroundColor : 'red', borderRadius : 100,}}>
-                        
+                    <View style={{width : 140, height : 140, backgroundColor : 'red', borderRadius : 100, position : 'relative',}}>
+                        <Icon2 name='edit' style={{fontSize : 25, position : 'absolute', bottom : 17, right : 17, color : '#fff'}}/>
                     </View>
                     <View style={{marginTop : 15,}}>
                         <Text style={{textAlign : 'center', fontSize : 20,}}>Sandaruwan Bandara</Text>
