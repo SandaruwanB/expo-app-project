@@ -20,8 +20,9 @@ import Notification from './user/Notifications'
 import Post from './user/Post'
 import Followers from './user/Followers'
 import Messaging from './user/Messaging'
-import { useState } from 'react'
 import Settings from './user/Settings'
+import ChangeCategory from './user/ChangeCategory'
+import ChangePassword from './user/ChangePassword'
 
 // admin user
 
@@ -126,6 +127,8 @@ const AppNavigation = () => {
                 <Stack.Screen name='UsersPannel' component={UserBottomNav} options={{headerShown : false}} />
                 <Stack.Screen name='Messaging' component={Messaging} />
                 <Stack.Screen name='Settings' component={Settings} />
+                <Stack.Screen name='Change Category' component={ChangeCategory} />
+                <Stack.Screen name='Change Password' component={ChangePassword} />
             </Stack.Navigator>
         </NavigationContainer>
     );
