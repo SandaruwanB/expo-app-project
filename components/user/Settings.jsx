@@ -31,8 +31,8 @@ const Settings = () => {
         <View style={[styles.container, {maxWidth : width, maxHeight : height}]}>
             <View style={{height : 240, width : '100%', marginTop : 30, position : 'relative',}}>
                 <View style={{width : '100%', flex : 1, alignItems : 'center'}}>
-                    <View style={{width : 140, height : 140, backgroundColor : 'red', borderRadius : 100, position : 'relative',}}>
-                        <Icon2 name='edit' style={{fontSize : 25, position : 'absolute', bottom : 17, right : 17, color : '#fff'}}/>
+                    <View style={{width : 140, height : 140, backgroundColor : '#fff', borderRadius : 100, position : 'relative',}}>
+                        <Icon2 name='edit' style={{fontSize : 25, position : 'absolute', bottom : 17, right : 17, color : '#3366FF'}}/>
                     </View>
                     <View style={{marginTop : 15,}}>
                         <Text style={{textAlign : 'center', fontSize : 20,}}>Sandaruwan Bandara</Text>
