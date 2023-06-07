@@ -27,13 +27,21 @@ const Settings = () => {
         navigate.navigate("Change Password");
     }
 
+    const about = ()=>{
+
+    }
+
+    const changePersonalData = ()=>{
+
+    }
+
     return (
-        <View style={[styles.container, {maxWidth : width, maxHeight : height}]}>
+        <View style={[styles.container, {maxWidth : width, maxHeight : height, backgroundColor : '#fff',}]}>
             <View style={{height : 290, width : '100%', marginTop : 30, position : 'relative',}}>
                 <View style={{width : '100%', flex : 1, alignItems : 'center'}}>
                     <View style={{width : 140, height : 140, backgroundColor : '#fff', borderRadius : 100, position : 'relative', marginTop : 20,}}>
                         <Image source={require('../../assets/images/defaultUser.png')} style={styles.userImage}/>
-                        <Icon2 name='edit' style={{fontSize : 25, position : 'absolute', bottom : 17, right : 17, color : '#3366FF'}}/>
+                        <Icon2 name='edit' style={{fontSize : 28, position : 'absolute', bottom : 0, right : 0, color : '#3366FF'}}/>
                     </View>
                     <View style={{marginTop : 15,}}>
                         <Text style={{textAlign : 'center', fontSize : 20,}}>Sandaruwan Bandara</Text>
@@ -41,7 +49,7 @@ const Settings = () => {
                     </View>
                 </View>
             </View>
-            <TouchableOpacity style={styles.signOut} onPress={()=>changeCategory()}>
+            <TouchableOpacity style={[styles.signOut, {marginTop : '10%',}]} onPress={()=>changePersonalData()}>
                 <Icon name='right' style={styles.signOutIcon}/>
                 <Text style={styles.signOutText}>Change Personal Data</Text>
             </TouchableOpacity>
@@ -53,7 +61,7 @@ const Settings = () => {
                 <Icon name='right' style={styles.signOutIcon}/>
                 <Text style={styles.signOutText}>Change Password</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.signOut} onPress={()=>changePassword()}>
+            <TouchableOpacity style={styles.signOut} onPress={()=>about()}>
                 <Icon name='right' style={styles.signOutIcon}/>
                 <Text style={styles.signOutText}>About</Text>
             </TouchableOpacity>

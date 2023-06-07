@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -35,7 +35,9 @@ const UserHeader = ()=>{
         <View style={styles.container}>
             <View style={styles.content}>
                 <View style={{position : 'relative', width : '20%'}}>
-                    <FaIcon name='user' size={30} style={{marginLeft : 30, marginTop : 20, color : '#2E3A59'}} onPress={()=>navigate.navigate('Account Settings')}/>
+                    <TouchableOpacity onPress={()=>navigate.navigate('Account Settings')}>
+                        <Image source={require("../assets/images/defaultUser.png")} style={styles.userIcon} />
+                    </TouchableOpacity>
                 </View>
                 <View style={{position : 'relative', width: '65%'}}>
                     <TextInput style={styles.searchBar} placeholder='Search'/>
@@ -171,6 +173,13 @@ const styles = StyleSheet.create({
         marginLeft : 15,
         color : '#2E3A59',
     },
+    userIcon : {
+        width : 45,
+        height : 45,
+        borderRadius : 40,
+        marginTop : 12,
+        marginLeft : 12,
+    }
 });
 
 export default AppNavigation;
