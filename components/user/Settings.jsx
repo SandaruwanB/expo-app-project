@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, StyleSheet, Text, TouchableOpacity, Dimensions} from 'react-native'
+import {View, StyleSheet, Text, TouchableOpacity, Dimensions, Image} from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
 import * as SecureStorage from 'expo-secure-store';
@@ -29,9 +29,10 @@ const Settings = () => {
 
     return (
         <View style={[styles.container, {maxWidth : width, maxHeight : height}]}>
-            <View style={{height : 240, width : '100%', marginTop : 30, position : 'relative',}}>
+            <View style={{height : 290, width : '100%', marginTop : 30, position : 'relative',}}>
                 <View style={{width : '100%', flex : 1, alignItems : 'center'}}>
-                    <View style={{width : 140, height : 140, backgroundColor : '#fff', borderRadius : 100, position : 'relative',}}>
+                    <View style={{width : 140, height : 140, backgroundColor : '#fff', borderRadius : 100, position : 'relative', marginTop : 20,}}>
+                        <Image source={require('../../assets/images/defaultUser.png')} style={styles.userImage}/>
                         <Icon2 name='edit' style={{fontSize : 25, position : 'absolute', bottom : 17, right : 17, color : '#3366FF'}}/>
                     </View>
                     <View style={{marginTop : 15,}}>
@@ -51,6 +52,10 @@ const Settings = () => {
             <TouchableOpacity style={styles.signOut} onPress={()=>changePassword()}>
                 <Icon name='right' style={styles.signOutIcon}/>
                 <Text style={styles.signOutText}>Change Password</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.signOut} onPress={()=>changePassword()}>
+                <Icon name='right' style={styles.signOutIcon}/>
+                <Text style={styles.signOutText}>About</Text>
             </TouchableOpacity>
             <TouchableOpacity  style={styles.signOut} onPress={()=>signOut()}>
                 <Icon name='logout' style={styles.signOutIcon}/>
@@ -82,7 +87,13 @@ const styles = StyleSheet.create({
         marginLeft : 10,
         fontSize : 14,
     },
-
+    userImage : {
+        width : 140,
+        height : 140,
+        borderRadius : 100,
+        borderWidth : 2,
+        borderColor : 'rgba(51, 102, 255, 0.54)',
+    }
 });
 
 export default Settings;
