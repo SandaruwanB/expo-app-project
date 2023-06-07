@@ -29,7 +29,7 @@ const Settings = () => {
 
     return (
         <View style={[styles.container, {maxWidth : width, maxHeight : height}]}>
-            <View style={{height : 250, width : '100%', marginTop : 30, position : 'relative',}}>
+            <View style={{height : 240, width : '100%', marginTop : 30, position : 'relative',}}>
                 <View style={{width : '100%', flex : 1, alignItems : 'center'}}>
                     <View style={{width : 140, height : 140, backgroundColor : 'red', borderRadius : 100, position : 'relative',}}>
                         <Icon2 name='edit' style={{fontSize : 25, position : 'absolute', bottom : 17, right : 17, color : '#fff'}}/>
@@ -40,6 +40,10 @@ const Settings = () => {
                     </View>
                 </View>
             </View>
+            <TouchableOpacity style={styles.signOut} onPress={()=>changeCategory()}>
+                <Icon name='right' style={styles.signOutIcon}/>
+                <Text style={styles.signOutText}>Change Personal Data</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.signOut} onPress={()=>changeCategory()}>
                 <Icon name='right' style={styles.signOutIcon}/>
                 <Text style={styles.signOutText}>Change Category</Text>
