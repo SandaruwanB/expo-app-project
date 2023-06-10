@@ -55,6 +55,7 @@ const Login = () => {
                         setEmailErrText("Account Not Found");
                     }
                     else if(res.data.result === "user"){
+                        setPassword("");
                         setToken("user");
                         navigate.navigate("UsersPannel");
                     }
