@@ -22,7 +22,7 @@ import Followers from './user/Followers'
 import Messaging from './user/Messaging'
 import Settings from './user/Settings'
 import ChangeCategory from './user/settings/ChangeCategory'
-import ChangePassword from './user/settings/ChangePassword'
+import ChangeUserData from './user/settings/ChangeUserData'
 
 // admin user
 
@@ -128,9 +128,9 @@ const AppNavigation = () => {
                 <Stack.Screen name='EmailVerify' component={EmailVerification} options={{headerShown : false}} />
                 <Stack.Screen name='UsersPannel' component={UserBottomNav} options={{headerShown : false}} />
                 <Stack.Screen name='Messaging' component={Messaging} />
-                <Stack.Screen name='Account Settings' component={Settings} />
-                <Stack.Screen name='Change Category' component={ChangeCategory} />
-                <Stack.Screen name='Change Password' component={ChangePassword} />
+                <Stack.Screen name='Account Settings' component={Settings} options={{headerTitle : ""}}/>
+                <Stack.Screen name='Change Category' component={ChangeCategory} options={{headerTitle : "Sharing Category"}}/>
+                <Stack.Screen name='Change Personal Details' component={ChangeUserData} options={{headerTitle : "Account Settings"}} />
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -32,7 +32,7 @@ const Settings = () => {
     }
 
     const changePersonalData = ()=>{
-
+        navigate.navigate("Change Personal Details");
     }
 
     return (
@@ -51,24 +51,25 @@ const Settings = () => {
             </View>
             <TouchableOpacity style={[styles.signOut, {marginTop : '10%',}]} onPress={()=>changePersonalData()}>
                 <Icon name='right' style={styles.signOutIcon}/>
-                <Text style={styles.signOutText}>Change Personal Data</Text>
+                <Text style={styles.signOutText}>Account Settings</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.signOut} onPress={()=>changeCategory()}>
                 <Icon name='right' style={styles.signOutIcon}/>
-                <Text style={styles.signOutText}>Change Category</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.signOut} onPress={()=>changePassword()}>
-                <Icon name='right' style={styles.signOutIcon}/>
-                <Text style={styles.signOutText}>Change Password</Text>
+                <Text style={styles.signOutText}>Sharing Category</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.signOut} onPress={()=>about()}>
                 <Icon name='right' style={styles.signOutIcon}/>
                 <Text style={styles.signOutText}>About</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.signOut}>
+                <Icon name='right' style={styles.signOutIcon}/>
+                <Text style={styles.signOutText}>Legal Notices</Text>
+            </TouchableOpacity>
             <TouchableOpacity  style={styles.signOut} onPress={()=>signOut()}>
                 <Icon name='logout' style={styles.signOutIcon}/>
                 <Text style={styles.signOutText}>Sign Out</Text>
             </TouchableOpacity>
+            <View style={{width : '100%', height : '100%', backgroundColor : '#fff',}}></View>
         </View>
     );
 }
