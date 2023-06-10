@@ -29,10 +29,7 @@ const UserHome = () => {
 
     return (
         <View>
-            <Text>{user}</Text>
-            <TouchableOpacity onPress={()=>signOut()}>
-                <Text>Sign Out</Text>
-            </TouchableOpacity>
+
         </View>
     );
 }

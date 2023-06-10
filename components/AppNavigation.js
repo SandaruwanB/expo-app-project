@@ -21,8 +21,8 @@ import Post from './user/Post'
 import Followers from './user/Followers'
 import Messaging from './user/Messaging'
 import Settings from './user/Settings'
-import ChangeCategory from './user/ChangeCategory'
-import ChangePassword from './user/ChangePassword'
+import ChangeCategory from './user/settings/ChangeCategory'
+import ChangePassword from './user/settings/ChangePassword'
 
 // admin user
 
