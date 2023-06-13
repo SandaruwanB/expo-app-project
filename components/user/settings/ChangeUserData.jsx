@@ -98,7 +98,7 @@ const ChangeUserData = () => {
                     setOldPassErrText("Old Password is Wrong");
                     setOldPassErr(true);
                 }
-                else{
+                else if(res.data.result === 'success'){
                     setNewPass("");
                     setOldPass("");
                     setReNewPass("");
