@@ -3,7 +3,7 @@ import {View, StyleSheet, FlatList, Text, ScrollView, TextInput, ToastAndroid, T
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FetherIcon from 'react-native-vector-icons/Feather'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import * as SecureStorage from 'expo-secure-store';
+import * as SecureStorage from 'expo-secure-store'
 import axios, { Axios } from 'axios'
 import config from '../../../apiConfig'
 
