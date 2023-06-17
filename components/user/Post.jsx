@@ -4,9 +4,13 @@ import {View, StyleSheet, Text, TouchableOpacity, TextInput, Dimensions} from 'r
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Dropdown } from 'react-native-element-dropdown'
 
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
+
 const Post = () => {
     const navigate = useNavigation();
     const [category, setCategory] = useState("");
+
 
     const data = [
         { label: "PUCIT", value: "pucit" },
@@ -30,7 +34,7 @@ const Post = () => {
                 <View style={{width : '96%', marginLeft : '2%',}}>
                     <Dropdown
                         style={styles.dropdown}
-                        placeholder='What is the Category?'
+                        placeholder='Choose Category?'
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
                         inputSearchStyle={styles.inputSearchStyle}
@@ -48,7 +52,7 @@ const Post = () => {
                     />
                 </View>
                 <View style={{width : '100%',}}>
-                    <TextInput numberOfLines={1} placeholder='What do you want to share?' style={styles.postHeadingInput}/>
+                    <TextInput numberOfLines={15} multiline={true} placeholder='What do you want to share about?' style={styles.postHeadingInput}/>
                 </View>
             </View>
         </View>
@@ -61,7 +65,7 @@ const styles = StyleSheet.create({
         top : 0,
         left : 0,
         width : '100%',
-        height : 110,
+        height : height,
         backgroundColor : '#fff',
     },
     topbar : {
@@ -86,17 +90,19 @@ const styles = StyleSheet.create({
         backgroundColor : '#fff',
         marginLeft : '2%',
         padding : 15,
-        borderRadius : 5,
         marginTop : 10,
+        textAlignVertical : 'top',
+        height : '100%',
     },
     dropdown: {
         height: 50,
-        backgroundColor: 'white',
+        backgroundColor: '#D9E4FF',
         borderRadius: 5,
         padding: 15,
     },
     placeholderStyle: {
         fontSize: 16,
+        color : '#2E3A59',
     },
     dropdownItem : {
         padding: 17,

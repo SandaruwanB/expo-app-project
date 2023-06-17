@@ -72,7 +72,7 @@ const UserHome = () => {
                             <TouchableOpacity style={{flexDirection : 'row'}}>
                                 <Image source={require('../../assets/images/defaultUser.png')} style={styles.userImage}/>
                                 <View style={{marginLeft : 10,}}>
-                                    <Text style={{fontSize : 15, fontWeight : 'bold',}}>Kasun Nimantha</Text>
+                                    <Text style={{fontSize : 15, fontWeight : 'bold', color : '#222B45',}}>Kasun Nimantha</Text>
                                     <Text style={{fontSize : 12, color : '#8F9BB3',}}>Software Engineer</Text>
                                 </View>
                             </TouchableOpacity>
@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
         paddingBottom : 5,
         fontWeight : 'bold',
         fontSize : 17,
+        color : '#222B45',
     },
     quickPostInput : {
         width : '100%',
@@ -200,6 +201,7 @@ const styles = StyleSheet.create({
     userImage : {
         width : 45,
         height : 45,
+        borderRadius : 45,
     }
 })
 

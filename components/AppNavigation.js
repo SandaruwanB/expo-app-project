@@ -79,7 +79,7 @@ const UserBottomNav = ()=>{
                         <FaIcon name='users' color={focused ? '#0057C2' : color} size={22} style={{marginTop : focused ? 3 : 8}} />
                     ),
                     tabBarLabel : ({focused, color})=>(
-                        <Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Connections' : ''}</Text>
+                        <Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Followers' : ''}</Text>
                     ),
                     tabBarStyle : {elevation : 0, shadowOpacity : 0, borderTopWidth : 1, borderTopColor : '#C5CEE0', height : 60},
                     header : ()=><UserHeader />,
