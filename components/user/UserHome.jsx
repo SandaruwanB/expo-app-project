@@ -4,6 +4,7 @@ import * as SecureStorage from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
 import { Dropdown } from 'react-native-element-dropdown';
 import IonIcons from 'react-native-vector-icons/Ionicons';
+import FaFa from 'react-native-vector-icons/FontAwesome5';
 
 const UserHome = () => {
     const [ user, setUser ] = useState("");
@@ -67,7 +68,20 @@ const UserHome = () => {
                 <View style={styles.content}>
                     <View style={styles.topLine}></View>
                     <View style={styles.iconContent}>
-                        <IonIcons name='star' style={styles.starIcon}/>
+                        <View style={styles.iconContentList}>
+                            <View></View>
+                            <View>
+                                <IonIcons name='star' style={[styles.starIcon, { color : '#FFC94D'}]}/>
+                                <IonIcons name='star-outline'  style={[styles.starIcon, {textAlign : 'center', display : 'none',}]}/>
+                                <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 12,}}>Starred</Text>
+                                <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 12, display : 'none'}}>Star</Text>
+                            </View>
+                            <View>
+                                <FaFa name='comment-dots' style={[styles.starIcon, {textAlign : 'center'}]}/>
+                                <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 12,}}>Comment</Text>
+                            </View>
+                            <View></View>
+                        </View>
                     </View>
                 </View>
             </ScrollView>
@@ -132,16 +146,24 @@ const styles = StyleSheet.create({
     },
     topLine : {
         width : '96%',
-        height : 0.7,
-        backgroundColor : '#636363',
+        height : 0.6,
+        backgroundColor : '#C5CEE0',
         marginLeft : '2%',
     },
     iconContent : {
-        padding : 5,
+        padding : 3,
+        flex : 6,
+        flexDirection : 'column',
+    },
+    iconContentList:{
+        marginTop : 2,
+        flexDirection : 'row',
+        justifyContent : 'space-between',
     },
     starIcon : {
-        fontSize : 22,
-        color : 'green',
+        fontSize : 18,
+        color : '#2E3A59',
+        textAlign : 'center',
     }
 })
 
