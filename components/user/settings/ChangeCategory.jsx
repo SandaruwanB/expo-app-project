@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {View, StyleSheet, ScrollView, Text} from 'react-native'
+import {View, StyleSheet, ScrollView, Text, Touchable, TouchableOpacity} from 'react-native'
 import * as SecureStorage from 'expo-secure-store'
 import { Dropdown } from 'react-native-element-dropdown'
 import config from '../../../apiConfig'
@@ -37,7 +37,11 @@ const ChangeCategory = () => {
     }, [setCData, setUserCategory]);
 
 
-
+    const setCategories = (item)=>{
+        //console.log(item.name);
+        setCategory(category.push(item.name));
+        console.log(category);
+    }
 
 
     return (
@@ -52,14 +56,12 @@ const ChangeCategory = () => {
                     iconStyle={styles.iconStyle}
                     data={cdata}
                     search
-                    onChange={ item => {
-                        setCategory(category=>[...category, item.values]);
-                    }}
+                    onChange={ item => setCategories(item)}
                     maxHeight={300}
                     labelField="name"
                     valueField="name"
                     searchPlaceholder="Search...."
-                    value={category}
+                    //value={category}
                 />
             </View>
             <View style={{paddingHorizontal : 20, marginTop : 10,}}>
@@ -67,8 +69,19 @@ const ChangeCategory = () => {
                     userCategory.length === 0 && category.length === 0 ? 
                         <Text style={{backgroundColor : 'rgba(0, 149, 255, 0.24)', textAlign : 'center', padding: 12, borderRadius : 4,}}>You didn't choose your category</Text>
                     : 
-                    ""
+                        ""
                 }
+                {
+                    category.length === 0 ? 
+                        "" 
+                    : 
+                        <View style={{alignItems : 'center',}}>
+                            <TouchableOpacity style={styles.saveBtn}>
+                                <Text style={{textAlign : 'center', color : '#fff',}}>Save</Text>
+                            </TouchableOpacity>
+                        </View>
+                }
+
             </View>
         </View>
     );
@@ -93,6 +106,12 @@ const styles = StyleSheet.create({
         fontSize : 14,
         borderRadius : 10,
     },
+    saveBtn : {
+        padding : 8,
+        backgroundColor : '#3366FF',
+        width : '35%',
+        borderRadius : 10,
+    }
 })
 
 export default ChangeCategory;
