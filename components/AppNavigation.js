@@ -174,11 +174,11 @@ const styles = StyleSheet.create({
         color : '#2E3A59',
     },
     userIcon : {
-        width : 45,
-        height : 45,
+        width : 40,
+        height : 40,
         borderRadius : 40,
-        marginTop : 12,
-        marginLeft : 12,
+        marginTop : 15,
+        marginLeft : 15,
     }
 });
 

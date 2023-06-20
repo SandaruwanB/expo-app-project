@@ -75,7 +75,7 @@ const ChangeCategory = () => {
                     category.length === 0 ? 
                         "" 
                     : 
-                        <View style={{alignItems : 'center',}}>
+                        <View style={{alignItems : 'center',}}>                            
                             <TouchableOpacity style={styles.saveBtn}>
                                 <Text style={{textAlign : 'center', color : '#fff',}}>Save</Text>
                             </TouchableOpacity>
