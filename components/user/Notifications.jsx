@@ -5,7 +5,7 @@ const Notifications = () => {
     return (
         <View style={styles.container}>
             <ScrollView style={{marginBottom : 100,}}>
-                <TouchableOpacity style={{flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 30, paddingVertical : 7, backgroundColor : 'rgba(51, 102, 255, 0.16)'}}>
+                <TouchableOpacity style={{flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 25, paddingVertical : 8, backgroundColor : 'rgba(51, 102, 255, 0.16)'}}>
                     <View>
                         <Image source={require('../../assets/images/defaultUser.png')} style={styles.image} />
                     </View>
@@ -29,11 +29,6 @@ const styles = StyleSheet.create({
         width : 45,
         height : 45,
         borderRadius : 50,
-    },
-    line : {
-        width : '100%',
-        height : 0.8,
-        backgroundColor : '#2E3A59',
     },
 })
 
