@@ -3,6 +3,7 @@ import {View, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput, Image} 
 import * as SecureStorage from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
 import { Dropdown } from 'react-native-element-dropdown';
+import { BottomSheet } from 'react-native-btr';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import FaFa from 'react-native-vector-icons/FontAwesome5';
 
@@ -117,6 +118,11 @@ const UserHome = () => {
                     </View>
                 </View>                
             </ScrollView>
+            <BottomSheet
+                visible={true}
+            >
+
+            </BottomSheet>
         </View>
     );
 }
