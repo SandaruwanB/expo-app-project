@@ -6,11 +6,13 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { BottomSheet } from 'react-native-btr';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import FaFa from 'react-native-vector-icons/FontAwesome5';
+import MatIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const UserHome = () => {
     const [ user, setUser ] = useState("");
     const navigate = useNavigation();
     const [category, setCategory] = useState("");
+    const [bottomTabOpen, setBottomTabOpen] = useState(false);
 
     const getToken = async () =>{
         try {
@@ -79,9 +81,8 @@ const UserHome = () => {
                             </TouchableOpacity>
                         </View>
                         <View style={{flexDirection : 'row', position : 'relative',}}>
-                            <TouchableOpacity style={{flexDirection : 'row',}}>
-                                <IonIcons name='add-sharp' style={{fontSize : 25, color : '#3366FF',}}/>
-                                <Text style={{marginLeft : 6, fontSize : 15, marginTop : 2, fontWeight : 'bold', color : '#3366FF'}}>Follow</Text>
+                            <TouchableOpacity style={{flexDirection : 'row',}} onPress={()=>setBottomTabOpen(true)}>
+                                <MatIcons name='dots-vertical' style={styles.bottomSheetOpenIcon}/>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -119,9 +120,14 @@ const UserHome = () => {
                 </View>                
             </ScrollView>
             <BottomSheet
-                visible={true}
+                visible={bottomTabOpen}
+                onBackButtonPress={()=>setBottomTabOpen(false)}
+                onBackdropPress={()=>setBottomTabOpen(false)}
             >
-
+                <View style={styles.bottomSheet}>
+                    <Text>ashdghagshjd</Text>
+                    <View style={styles.sheetTopBar}></View>
+                </View>
             </BottomSheet>
         </View>
     );
@@ -208,6 +214,29 @@ const styles = StyleSheet.create({
         width : 45,
         height : 45,
         borderRadius : 45,
+    },
+    bottomSheet : {
+        width : '100%',
+        paddingHorizontal : 50,
+        paddingVertical :20,
+        backgroundColor : '#fff',
+        borderTopLeftRadius : 20,
+        borderTopRightRadius : 20,
+        position : 'relative',
+    },
+    sheetTopBar : {
+        width : 60,
+        height : 8,
+        backgroundColor : '#222B45',
+        position : 'absolute',
+        top : 0,
+        left : '55%',
+        borderBottomLeftRadius : 10,
+        borderBottomRightRadius : 10,
+    },
+    bottomSheetOpenIcon : {
+        fontSize : 30,
+        marginTop : 4,
     }
 })
 
