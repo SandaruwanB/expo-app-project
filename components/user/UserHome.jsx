@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput, Image, TouchableWithoutFeedback} from 'react-native';
 import * as SecureStorage from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
-import { Dropdown } from 'react-native-element-dropdown';
 import { BottomSheet } from 'react-native-btr';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import FaFa from 'react-native-vector-icons/FontAwesome5';
@@ -12,8 +11,9 @@ import MatirialIcon from 'react-native-vector-icons/MaterialIcons';
 const UserHome = () => {
     const [ user, setUser ] = useState("");
     const navigate = useNavigation();
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState("Choose category?");
     const [bottomTabOpen, setBottomTabOpen] = useState(false);
+    const [categoryOpen, setCategoryOpen] = useState(false);
 
     const getToken = async () =>{
         try {
@@ -44,26 +44,13 @@ const UserHome = () => {
     return (
         <View style={styles.conatiner}>
             <ScrollView style={{height : '100%', marginBottom : 100,}}>
-                <View style={styles.quickPost}>
-                    <Text style={styles.quickText}>Quick Post</Text>
-                    <Dropdown 
-                        style={styles.dropdown}
-                        placeholder='What is the Category?'
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={data}
-                        search
-                        onChange={ item => {
-                            setCategory(item.value);
-                        }}
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        searchPlaceholder="Search...."
-                        value={category}
-                    />
+                <View style={[styles.quickPost, ]}>
+                    <Text style={[styles.quickText, {paddingBottom : 10,}]}>Quick Post</Text>
+                    <View style={styles.categorySelection}>
+                        <TouchableWithoutFeedback style={{width : '100%', height : '100%'}} onPress={()=>setCategoryOpen(true)}>
+                            <Text style={{paddingLeft : 3, color : '#2E3A59'}}>{category}</Text>
+                        </TouchableWithoutFeedback>
+                    </View> 
                     <TextInput placeholder='Your Post' style={styles.quickPostInput} multiline={true} numberOfLines={3}/>
                     <TouchableOpacity style={styles.postbtn}>
                         <Text style={styles.postBtnText}>Post</Text>
@@ -118,7 +105,107 @@ const UserHome = () => {
                             <View></View>
                         </View>
                     </View>
-                </View>                
+                </View>  
+
+                                <View style={styles.content}>
+                    <View style={[styles.iconContentList, { paddingHorizontal : 20, paddingBottom : 15, paddingTop : 10,}]}>
+                        <View style={{flexDirection : 'row', position : 'relative',}}>
+                            <TouchableOpacity style={{flexDirection : 'row'}}>
+                                <Image source={require('../../assets/images/defaultUser.png')} style={styles.userImage}/>
+                                <View style={{marginLeft : 10,}}>
+                                    <Text style={{fontSize : 15, fontWeight : 'bold', color : '#222B45',}}>Kasun Nimantha</Text>
+                                    <Text style={{fontSize : 12, color : '#8F9BB3',}}>Software Engineer</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{flexDirection : 'row', position : 'relative',}}>
+                            <TouchableOpacity style={{flexDirection : 'row',}} onPress={()=>setBottomTabOpen(true)}>
+                                <MatIcons name='dots-vertical' style={styles.bottomSheetOpenIcon}/>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={{padding : 20, backgroundColor : '#F2F8FF',}}>
+                        <Text style={{fontSize : 18, textAlign : 'justify',}}>test test test test test test test test test test test test test test test test test test test test test test ?</Text>
+                    </View>
+                    <View style={[styles.iconContentList, {paddingHorizontal : 25, paddingBottom : 4, marginTop : 15,}]}>
+                        <View style={{flexDirection : 'row'}}>
+                            <IonIcons name='star' style={[styles.starIcon, { color : '#FFC94D',}]}/>
+                            <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>112 persons starred this</Text>
+                        </View>
+                        <View>
+                            <TouchableOpacity>
+                                <Text style={{color : '#2E3A59', fontSize : 13,}}>36 comments</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={styles.topLine}></View>
+                    <View style={styles.iconContent}>
+                        <View style={styles.iconContentList}>
+                            <View></View>
+                            <View>
+                                <IonIcons name='star' style={[styles.starIcon, { color : '#FFC94D', display : 'none',}]}/>
+                                <IonIcons name='star-outline'  style={[styles.starIcon, {textAlign : 'center', }]}/>
+                                <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 12, display : 'none',}}>Starred</Text>
+                                <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 12,}}>Star</Text>
+                            </View>
+                            <View>
+                                <FaFa name='comment-dots' style={[styles.starIcon, {textAlign : 'center'}]}/>
+                                <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 12,}}>Comment</Text>
+                            </View>
+                            <View></View>
+                        </View>
+                    </View>
+                </View> 
+
+                                <View style={styles.content}>
+                    <View style={[styles.iconContentList, { paddingHorizontal : 20, paddingBottom : 15, paddingTop : 10,}]}>
+                        <View style={{flexDirection : 'row', position : 'relative',}}>
+                            <TouchableOpacity style={{flexDirection : 'row'}}>
+                                <Image source={require('../../assets/images/defaultUser.png')} style={styles.userImage}/>
+                                <View style={{marginLeft : 10,}}>
+                                    <Text style={{fontSize : 15, fontWeight : 'bold', color : '#222B45',}}>Kasun Nimantha</Text>
+                                    <Text style={{fontSize : 12, color : '#8F9BB3',}}>Software Engineer</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{flexDirection : 'row', position : 'relative',}}>
+                            <TouchableOpacity style={{flexDirection : 'row',}} onPress={()=>setBottomTabOpen(true)}>
+                                <MatIcons name='dots-vertical' style={styles.bottomSheetOpenIcon}/>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={{padding : 20, backgroundColor : '#F2F8FF',}}>
+                        <Text style={{fontSize : 18, textAlign : 'justify',}}>test test test test test test test test test test test test test test test test test test test test test test ?</Text>
+                    </View>
+                    <View style={[styles.iconContentList, {paddingHorizontal : 25, paddingBottom : 4, marginTop : 15,}]}>
+                        <View style={{flexDirection : 'row'}}>
+                            <IonIcons name='star' style={[styles.starIcon, { color : '#FFC94D',}]}/>
+                            <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>112 persons starred this</Text>
+                        </View>
+                        <View>
+                            <TouchableOpacity>
+                                <Text style={{color : '#2E3A59', fontSize : 13,}}>36 comments</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={styles.topLine}></View>
+                    <View style={styles.iconContent}>
+                        <View style={styles.iconContentList}>
+                            <View></View>
+                            <View>
+                                <IonIcons name='star' style={[styles.starIcon, { color : '#FFC94D', display : 'none',}]}/>
+                                <IonIcons name='star-outline'  style={[styles.starIcon, {textAlign : 'center', }]}/>
+                                <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 12, display : 'none',}}>Starred</Text>
+                                <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 12,}}>Star</Text>
+                            </View>
+                            <View>
+                                <FaFa name='comment-dots' style={[styles.starIcon, {textAlign : 'center'}]}/>
+                                <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 12,}}>Comment</Text>
+                            </View>
+                            <View></View>
+                        </View>
+                    </View>
+                </View>               
             </ScrollView>
             <BottomSheet
                 visible={bottomTabOpen}
@@ -134,9 +221,36 @@ const UserHome = () => {
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback style={{width : '100%',}}>
-                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '30%', padding : 8,}}>
+                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '41%', padding : 8,}}>
                             <MatirialIcon name='report' style={{fontSize : 18,}}/>
-                            <Text>Report</Text>
+                            <Text>Report Post</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+            </BottomSheet>
+            <BottomSheet
+                visible={categoryOpen}
+                onBackButtonPress={()=>setCategoryOpen(false)}
+                onBackdropPress={()=>setCategoryOpen(false)}
+            >
+                <View style={styles.bottomSheet}>
+                    <View style={styles.sheetTopBar}></View>
+                    <TouchableWithoutFeedback style={{width : '100%',}}>
+                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '63%', padding : 8,}}>
+                            <FaFa name='plus' style={{fontSize : 18,}}/>
+                            <Text>Computer Technology</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback style={{width : '100%',}}>
+                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '65%', padding : 8,}}>
+                            <FaFa name='plus' style={{fontSize : 18,}}/>
+                            <Text>Business Management</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback style={{width : '100%',}}>
+                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '46%', padding : 8,}}>
+                            <FaFa name='plus' style={{fontSize : 18,}}/>
+                            <Text>AI Intregration</Text>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
@@ -249,6 +363,13 @@ const styles = StyleSheet.create({
     bottomSheetOpenIcon : {
         fontSize : 30,
         marginTop : 2,
+    },
+    categorySelection : {
+        paddingVertical : 7,
+        paddingHorizontal : 5,
+        backgroundColor : '#D9E4FF',
+        marginBottom : 10,
+        borderRadius : 5,
     }
 })
 

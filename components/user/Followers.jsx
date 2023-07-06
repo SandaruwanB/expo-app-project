@@ -74,6 +74,12 @@ const Followers = () => {
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback style={{width : '100%',}}>
+                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '26%', padding : 8,}}>
+                            <MatirialIcon name='chat' style={{fontSize : 18,}}/>
+                            <Text>Chat</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback style={{width : '100%',}}>
                         <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '30%', padding : 8,}}>
                             <MatirialIcon name='report' style={{fontSize : 18,}}/>
                             <Text>Report</Text>
