@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput, Image} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput, Image, TouchableWithoutFeedback} from 'react-native';
 import * as SecureStorage from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -7,6 +7,7 @@ import { BottomSheet } from 'react-native-btr';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import FaFa from 'react-native-vector-icons/FontAwesome5';
 import MatIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MatirialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const UserHome = () => {
     const [ user, setUser ] = useState("");
@@ -125,8 +126,19 @@ const UserHome = () => {
                 onBackdropPress={()=>setBottomTabOpen(false)}
             >
                 <View style={styles.bottomSheet}>
-                    <Text>ashdghagshjd</Text>
                     <View style={styles.sheetTopBar}></View>
+                    <TouchableWithoutFeedback style={{width : '100%',}}>
+                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '30%', padding : 8,}}>
+                            <FaFa name='plus' style={{fontSize : 18,}}/>
+                            <Text>Follow</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback style={{width : '100%',}}>
+                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '30%', padding : 8,}}>
+                            <MatirialIcon name='report' style={{fontSize : 18,}}/>
+                            <Text>Report</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
             </BottomSheet>
         </View>
@@ -226,17 +238,17 @@ const styles = StyleSheet.create({
     },
     sheetTopBar : {
         width : 60,
-        height : 8,
+        height : 6,
         backgroundColor : '#222B45',
         position : 'absolute',
-        top : 0,
+        top : 4,
         left : '55%',
         borderBottomLeftRadius : 10,
         borderBottomRightRadius : 10,
     },
     bottomSheetOpenIcon : {
         fontSize : 30,
-        marginTop : 4,
+        marginTop : 2,
     }
 })
 
