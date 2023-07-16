@@ -14,6 +14,9 @@ const UserHome = () => {
     const [category, setCategory] = useState("Choose category?");
     const [bottomTabOpen, setBottomTabOpen] = useState(false);
     const [categoryOpen, setCategoryOpen] = useState(false);
+    const [postContent, setPostContent] = useState("");
+    const [postErrCategory, setPostErrCategory] = useState(false);
+    const [postErrText, setPostErrText] = useState(false);
 
     const getToken = async () =>{
         try {
@@ -25,11 +28,11 @@ const UserHome = () => {
     }
     getToken();
 
-    const data = [
-        { label: "PUCIT", value: "pucit" },
-        { label: "UCP", value: "ucp" },
-        { label: "UET", value: "uet" },
-    ];
+    const quickPost = async ()=>{
+        if(category === "Choose category?"){
+            
+        }
+    }
     
     /*const signOut = async ()=>{
         try {
@@ -51,8 +54,8 @@ const UserHome = () => {
                             <Text style={{paddingLeft : 3, color : '#2E3A59'}}>{category}</Text>
                         </TouchableWithoutFeedback>
                     </View> 
-                    <TextInput placeholder='Your Post' style={styles.quickPostInput} multiline={true} numberOfLines={3}/>
-                    <TouchableOpacity style={styles.postbtn}>
+                    <TextInput placeholder='Your Post' style={styles.quickPostInput} onChangeText={text=>setPostContent(text)} multiline={true} numberOfLines={3}/>
+                    <TouchableOpacity style={styles.postbtn} onPress={quickPost}>
                         <Text style={styles.postBtnText}>Post</Text>
                     </TouchableOpacity>
                 </View>
@@ -234,21 +237,21 @@ const UserHome = () => {
                 onBackdropPress={()=>setCategoryOpen(false)}
             >
                 <View style={styles.bottomSheet}>
-                    <View style={styles.sheetTopBar}></View>
-                    <TouchableWithoutFeedback style={{width : '100%',}}>
-                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '63%', padding : 8,}}>
+                    <View style={styles.sheetTopBar} ></View>
+                    <TouchableWithoutFeedback style={{width : '40%',}}>
+                        <View style={{flexDirection : 'row', justifyContent : 'space-between', padding : 10,}}>
                             <FaFa name='plus' style={{fontSize : 18,}}/>
                             <Text>Computer Technology</Text>
                         </View>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback style={{width : '100%',}}>
-                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '65%', padding : 8,}}>
+                    <TouchableWithoutFeedback style={{width : '40%',}}>
+                        <View style={{flexDirection : 'row', justifyContent : 'space-between', padding : 10,}}>
                             <FaFa name='plus' style={{fontSize : 18,}}/>
                             <Text>Business Management</Text>
                         </View>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback style={{width : '100%',}}>
-                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '46%', padding : 8,}}>
+                    <TouchableWithoutFeedback style={{width : '40%',}}>
+                        <View style={{flexDirection : 'row', justifyContent : 'space-between', padding : 10,}}>
                             <FaFa name='plus' style={{fontSize : 18,}}/>
                             <Text>AI Intregration</Text>
                         </View>
