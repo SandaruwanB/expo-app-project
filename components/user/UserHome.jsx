@@ -13,7 +13,7 @@ import config from '../../apiConfig'
 const UserHome = () => {
     const [ user, setUser ] = useState("");
     const navigate = useNavigation();
-    const [category, setCategory] = useState("Chose category?");
+    const [category, setCategory] = useState("Select the Category");
     const [bottomTabOpen, setBottomTabOpen] = useState(false);
     const [categoryOpen, setCategoryOpen] = useState(false);
     const [postContent, setPostContent] = useState("");
@@ -31,11 +31,11 @@ const UserHome = () => {
     getToken();
 
     const quickPost = async ()=>{
-        if(category === "Choose category?" && postContent === ""){
+        if(category === "Select the Category" && postContent === ""){
             setPostErrCategory(true);
             setPostErrText(true);
         }
-        else if(category === "Choose category?"){
+        else if(category === "Select the Category"){
             setPostErrCategory(true);
             setPostErrText(true);
         }

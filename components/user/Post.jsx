@@ -1,22 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, TextInput, Dimensions} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, TextInput, Dimensions, TouchableWithoutFeedback} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { Dropdown } from 'react-native-element-dropdown'
+import { BottomSheet } from 'react-native-btr';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 const Post = () => {
     const navigate = useNavigation();
-    const [category, setCategory] = useState("");
-
-
-    const data = [
-        { label: "PUCIT", value: "pucit" },
-        { label: "UCP", value: "ucp" },
-        { label: "UET", value: "uet" },
-    ];
+    const [category, setCategory] = useState("Select the Category");
+    const [changeCategory, setChangeCategory] = useState(false);
 
     return (
         <View>
@@ -31,29 +25,15 @@ const Post = () => {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={{width : '96%', marginLeft : '2%',}}>
-                    <Dropdown
-                        style={styles.dropdown}
-                        placeholder='Choose Category?'
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={data}
-                        search
-                        onChange={ item => {
-                            setCategory(item.value);
-                        }}
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        searchPlaceholder="Search...."
-                        value={category}
-                    />
+                <View style={{width : '92%', marginLeft : '4%', backgroundColor : '#D9E4FF', padding : 10, paddingVertical : 12, borderRadius : 5,}}>
+                    <TouchableWithoutFeedback style={{width : '100%'}}>
+                        <Text style={styles.placeholderStyle}>{category}</Text>
+                    </TouchableWithoutFeedback>
                 </View>
                 <View style={{width : '100%',}}>
-                    <TextInput numberOfLines={15} multiline={true} placeholder='What do you want to share about?' style={styles.postHeadingInput}/>
+                    <TextInput numberOfLines={2} multiline={true} placeholder='What do you want to share about?' style={styles.postHeadingInput}/>
                 </View>
+                
             </View>
         </View>
     );
@@ -86,13 +66,14 @@ const styles = StyleSheet.create({
         borderRadius : 5,
     },
     postHeadingInput : {
-        width : '96%',
-        backgroundColor : '#fff',
-        marginLeft : '2%',
+        width : '92%',
+        backgroundColor : '#D9E4FF',
+        marginLeft : '4%',
         padding : 15,
         marginTop : 10,
         textAlignVertical : 'top',
-        height : '100%',
+        height : '50%',
+        borderRadius : 7,
     },
     dropdown: {
         height: 50,
