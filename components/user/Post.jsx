@@ -4,7 +4,7 @@ import {View, StyleSheet, Text, TouchableOpacity, TextInput, Dimensions, Touchab
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FaFa from 'react-native-vector-icons/FontAwesome5';
 import { BottomSheet } from 'react-native-btr';
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from 'expo-image-picker'
 
 
 const width = Dimensions.get('window').width;
@@ -14,37 +14,37 @@ const Post = () => {
     const navigate = useNavigation();
     const [category, setCategory] = useState("Select the Category");
     const [changeCategory, setChangeCategory] = useState(false);
-    const [image,setImage] = useState([]);
+    const [image,setImage] = useState("");
     const [dailogOpen, setDialogOpen] = useState(false);
+    const [galleryPermission, setGalleryPermision] = useState(null);
 
     const pickImageAsync = async ()=>{
-        /*try{
-            const result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.All,
-                allowsEditing: true,
-                aspect: [4, 3],
-                quality: 1,
-            });
-            console.log(result);
-    
-            if (!result.cancelled) {
-              setImage(result.assets[0].uri);
-            }
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes : ImagePicker.MediaTypeOptions.Images,
+            base64 : true,
+            quality : 1,
+        });
+        if(!result.canceled){
+            setImage(result.assets[0].base64);
         }
-        catch(e){
-            console.log(e);
-        }*/
+        else{
+            console.log("canceled");
+        }
 
-        //setImage(null);
-        /*const result = await ImagePicker.launchCameraAsync();
+    }
 
-        // Explore the result
-        console.log(result);
-    
-        if (!result.cancelled) {
-          setImage(result);
-          console.log(result);
-        }*/
+    const pickerCameraImageAsync = async ()=>{
+        const result = await ImagePicker.launchCameraAsync({
+            mediaTypes : ImagePicker.MediaTypeOptions.Images,
+            quality : 1,
+            base64 : true,
+        });
+        if(!result.canceled){
+            setImage(result.assets[0].base64);
+        }
+        else{
+            console.log("canceled");
+        }
     }
 
     return (
@@ -52,7 +52,7 @@ const Post = () => {
             <View style={styles.header}>
                 <View style={styles.topbar}>
                     <View style={{marginLeft : '5%',}}>
-                        <Icon name='close' style={styles.closeBtn} onPress={()=>navigate.goBack()}/>
+                        <Icon name='close' style={styles.closeBtn} onPress={()=>{setImage("");navigate.goBack();}}/>
                     </View>
                     <View style={{marginLeft: '57%',}}>
                         <TouchableOpacity style={styles.postBtn} onPress={pickImageAsync}>
@@ -65,12 +65,20 @@ const Post = () => {
                         <Text style={styles.placeholderStyle}>{category}</Text>
                     </TouchableWithoutFeedback>
                 </View>
-                <View style={{width : '100%', maxHeight : '30%'}}>
+                <View style={[{width : '100%'}, image !== "" ? {height : '10%'} : {height : '30%'}]}>
                     <TextInput numberOfLines={2} multiline={true} placeholder='What do you want to share about?' style={styles.postHeadingInput}/>
                 </View>
+                {
+                    image !== "" ? 
+                    <View style={{width : '100%', height : '40%', marginTop : 20, paddingHorizontal : 20, position : 'relative'}}>
+                        <Image source={{uri : `data:image/png;base64,${image}`}} style={{width : '100%', height : '90%',borderRadius : 5,}}/>
+                        <Icon name='close' style={{backgroundColor : '#fff', position : 'absolute', top : 15, right : 35, borderRadius : 15, padding : 3, fontSize : 15, color : 'red'}} onPress={()=>setImage("")}/>
+                    </View> : ""
+                }
+ 
                 <View style={styles.inputContent}>
                     <View style={styles.contnetInputs}>
-                        <TouchableOpacity style={styles.contentMid}>
+                        <TouchableOpacity style={styles.contentMid} onPress={()=>pickImageAsync()}>
                             <Icon name='image' style={[styles.closeBtn, {textAlign : 'center', color : '#3366FF'}]}/>
                             <Text style={{textAlign : 'center', marginTop : 5,}}>Add Image</Text>
                         </TouchableOpacity>
@@ -82,7 +90,7 @@ const Post = () => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.contnetInputs}>
-                        <TouchableOpacity style={styles.contentMid}>
+                        <TouchableOpacity style={styles.contentMid} onPress={()=>pickerCameraImageAsync()}>
                             <Icon name='camera' style={[styles.closeBtn, {textAlign : 'center', color : '#3366FF'}]}/>
                             <Text style={{textAlign : 'center', marginTop : 5,}}>Open Camera</Text>
                         </TouchableOpacity>
