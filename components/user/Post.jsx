@@ -15,29 +15,36 @@ const Post = () => {
     const [category, setCategory] = useState("Select the Category");
     const [changeCategory, setChangeCategory] = useState(false);
     const [image,setImage] = useState([]);
+    const [dailogOpen, setDialogOpen] = useState(false);
 
     const pickImageAsync = async ()=>{
-        /*const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-        console.log(result);
-
-        if (!result.canceled) {
-          setImage(result.assets[0].uri);
+        /*try{
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+            });
+            console.log(result);
+    
+            if (!result.cancelled) {
+              setImage(result.assets[0].uri);
+            }
+        }
+        catch(e){
+            console.log(e);
         }*/
+
         //setImage(null);
-        const result = await ImagePicker.launchCameraAsync();
+        /*const result = await ImagePicker.launchCameraAsync();
 
         // Explore the result
         console.log(result);
     
         if (!result.cancelled) {
-          setImage(result.uri);
-          console.log(result.uri);
-        }
+          setImage(result);
+          console.log(result);
+        }*/
     }
 
     return (
@@ -58,11 +65,28 @@ const Post = () => {
                         <Text style={styles.placeholderStyle}>{category}</Text>
                     </TouchableWithoutFeedback>
                 </View>
-                <View style={{width : '100%',}}>
+                <View style={{width : '100%', maxHeight : '30%'}}>
                     <TextInput numberOfLines={2} multiline={true} placeholder='What do you want to share about?' style={styles.postHeadingInput}/>
                 </View>
-                <View style={{marginTop : 0,}}>
-                    <Image source={{uri : image}} style={{ width: 400, height: 400 }}/>
+                <View style={styles.inputContent}>
+                    <View style={styles.contnetInputs}>
+                        <TouchableOpacity style={styles.contentMid}>
+                            <Icon name='image' style={[styles.closeBtn, {textAlign : 'center', color : '#3366FF'}]}/>
+                            <Text style={{textAlign : 'center', marginTop : 5,}}>Add Image</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.contnetInputs}>
+                        <TouchableOpacity style={styles.contentMid}>
+                            <Icon name='text' style={[styles.closeBtn, {textAlign : 'center', color : '#3366FF'}]}/>
+                            <Text style={{textAlign : 'center', marginTop : 5,}}>Add Text</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.contnetInputs}>
+                        <TouchableOpacity style={styles.contentMid}>
+                            <Icon name='camera' style={[styles.closeBtn, {textAlign : 'center', color : '#3366FF'}]}/>
+                            <Text style={{textAlign : 'center', marginTop : 5,}}>Open Camera</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
             <BottomSheet
@@ -126,11 +150,12 @@ const styles = StyleSheet.create({
         width : '92%',
         backgroundColor : '#D9E4FF',
         marginLeft : '4%',
+        height : '90%',
         padding : 15,
         marginTop : 10,
         textAlignVertical : 'top',
-        height : '30%',
         borderRadius : 7,
+        paddingBottom : 0,
     },
     dropdown: {
         height: 50,
@@ -191,6 +216,20 @@ const styles = StyleSheet.create({
         marginBottom : 10,
         borderRadius : 5,
     },
+    inputContent : {
+        flexDirection : 'row',
+        justifyContent : 'space-between',
+        paddingHorizontal : 30,
+    },
+    contnetInputs : {
+        backgroundColor : '#D9E4FF',
+        borderRadius : 5,
+    },
+    contentMid : {
+        flexDirection : 'column',
+        justifyContent : 'center',
+        padding : 15,
+    }
 })
 
 export default Post;
