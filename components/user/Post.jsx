@@ -1,10 +1,13 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, TextInput, Dimensions, TouchableWithoutFeedback, Image} from 'react-native';
+import { useNavigation } from '@react-navigation/native'
+import React, { useEffect, useState } from 'react'
+import {View, StyleSheet, Text, TouchableOpacity, TextInput, Dimensions, TouchableWithoutFeedback, Image} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import FaFa from 'react-native-vector-icons/FontAwesome5';
-import { BottomSheet } from 'react-native-btr';
+import FaFa from 'react-native-vector-icons/FontAwesome5'
+import { BottomSheet } from 'react-native-btr'
 import * as ImagePicker from 'expo-image-picker'
+import axios from 'axios'
+import * as SecureStorage from 'expo-secure-store'
+import config from '../../apiConfig'
 
 
 const width = Dimensions.get('window').width;
@@ -15,10 +18,22 @@ const Post = () => {
     const [category, setCategory] = useState("Select the Category");
     const [changeCategory, setChangeCategory] = useState(false);
     const [image,setImage] = useState("");
-    const [dailogOpen, setDialogOpen] = useState(false);
-    const [galleryPermission, setGalleryPermision] = useState(null);
+    const [textPost, setTextPost] = useState("");
+    const [postHeading, setPostHeading] = useState("");
+    const [user,setUser] = useState("");
+
+    const getToken = async () =>{
+        try {
+            const result = await SecureStorage.getItemAsync('auth');
+            setUser(result);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    getToken();
 
     const pickImageAsync = async ()=>{
+        setTextPost("");
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes : ImagePicker.MediaTypeOptions.Images,
             base64 : true,
@@ -34,6 +49,7 @@ const Post = () => {
     }
 
     const pickerCameraImageAsync = async ()=>{
+        setTextPost("");
         const result = await ImagePicker.launchCameraAsync({
             mediaTypes : ImagePicker.MediaTypeOptions.Images,
             quality : 1,
@@ -47,15 +63,31 @@ const Post = () => {
         }
     }
 
+    const post = ()=>{
+        if(category === "Select the Category" || postHeading === ""){
+            alert("You Missed Some Required Data");
+        }
+        else if(image === "" && textPost === ""){
+            alert("You Missed the Post Body")
+        }
+        else{
+            axios.post(`${config.uri}/post`, {
+                image : image
+            }).then(res=>{
+                console.log(res.data);
+            })
+        }
+    }
+
     return (
         <View>
             <View style={styles.header}>
                 <View style={styles.topbar}>
                     <View style={{marginLeft : '5%',}}>
-                        <Icon name='close' style={styles.closeBtn} onPress={()=>{setImage("");navigate.goBack();}}/>
+                        <Icon name='close' style={styles.closeBtn} onPress={()=>{setImage("");setCategory("Select the Category");setPostHeading("");navigate.goBack();}}/>
                     </View>
                     <View style={{marginLeft: '57%',}}>
-                        <TouchableOpacity style={styles.postBtn} onPress={pickImageAsync}>
+                        <TouchableOpacity style={styles.postBtn} onPress={()=>post()}>
                             <Text style={{color : '#fff', fontSize : 16}}>Post</Text>
                         </TouchableOpacity>
                     </View>
@@ -66,7 +98,7 @@ const Post = () => {
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={[{width : '100%'}, image !== "" ? {height : '10%'} : {height : '30%'}]}>
-                    <TextInput numberOfLines={2} multiline={true} placeholder='What do you want to share about?' style={styles.postHeadingInput}/>
+                    <TextInput numberOfLines={2} multiline={true} placeholder='What do you want to share about?' value={postHeading} style={styles.postHeadingInput} onChangeText={text=>setPostHeading(text)}/>
                 </View>
                 {
                     image !== "" ? 
@@ -104,19 +136,19 @@ const Post = () => {
             >
                 <View style={styles.bottomSheet}>
                     <View style={styles.sheetTopBar} ></View>
-                    <TouchableWithoutFeedback style={{width : '40%',}}>
+                    <TouchableWithoutFeedback style={{width : '40%',}} onPress={()=>{setCategory("computer technology");setChangeCategory(false);}}>
                         <View style={{flexDirection : 'row', justifyContent : 'space-between', padding : 10,}}>
                             <FaFa name='plus' style={{fontSize : 18,}}/>
                             <Text>Computer Technology</Text>
                         </View>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback style={{width : '40%',}}>
+                    <TouchableWithoutFeedback style={{width : '40%',}} onPress={()=>{setCategory("business management");setChangeCategory(false);}}>
                         <View style={{flexDirection : 'row', justifyContent : 'space-between', padding : 10,}}>
                             <FaFa name='plus' style={{fontSize : 18,}}/>
                             <Text>Business Management</Text>
                         </View>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback style={{width : '40%',}}>
+                    <TouchableWithoutFeedback style={{width : '40%',}} onPress={()=>{setCategory("ai inergration");setChangeCategory(false);}}>
                         <View style={{flexDirection : 'row', justifyContent : 'space-between', padding : 10,}}>
                             <FaFa name='plus' style={{fontSize : 18,}}/>
                             <Text>AI Intregration</Text>
