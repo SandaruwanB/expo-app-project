@@ -8,6 +8,7 @@ import * as ImagePicker from 'expo-image-picker'
 import axios from 'axios'
 import * as SecureStorage from 'expo-secure-store'
 import config from '../../apiConfig'
+import db from '../../firebaseConfig'
 
 
 const width = Dimensions.get('window').width;
@@ -21,6 +22,10 @@ const Post = () => {
     const [textPost, setTextPost] = useState("");
     const [postHeading, setPostHeading] = useState("");
     const [user,setUser] = useState("");
+
+    useEffect(()=>{
+        console.log(db);
+    })
 
     const getToken = async () =>{
         try {
@@ -36,16 +41,14 @@ const Post = () => {
         setTextPost("");
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes : ImagePicker.MediaTypeOptions.Images,
-            base64 : true,
             quality : 1,
         });
         if(!result.canceled){
-            setImage(result.assets[0].base64);
+            setImage(result.assets[0]);
         }
         else{
             console.log("canceled");
         }
-
     }
 
     const pickerCameraImageAsync = async ()=>{
@@ -53,17 +56,16 @@ const Post = () => {
         const result = await ImagePicker.launchCameraAsync({
             mediaTypes : ImagePicker.MediaTypeOptions.Images,
             quality : 1,
-            base64 : true,
         });
         if(!result.canceled){
-            setImage(result.assets[0].base64);
+            setImage(result.assets[0]);
         }
         else{
             console.log("canceled");
         }
     }
 
-    const post = ()=>{
+    const post = async ()=>{
         if(category === "Select the Category" || postHeading === ""){
             alert("You Missed Some Required Data");
         }
@@ -71,8 +73,9 @@ const Post = () => {
             alert("You Missed the Post Body")
         }
         else{
-            axios.post(`${config.uri}/post`, {
-                image : image
+            await axios.post(`${config.uri}/post`, {
+                category : category,
+                user : user,
             }).then(res=>{
                 console.log(res.data);
             })
@@ -103,7 +106,7 @@ const Post = () => {
                 {
                     image !== "" ? 
                     <View style={{width : '100%', height : '40%', marginTop : 20, paddingHorizontal : 20, position : 'relative'}}>
-                        <Image source={{uri : `data:image/png;base64,${image}`}} style={{width : '100%', height : '90%',borderRadius : 5,}}/>
+                        <Image source={{uri : image.uri}} style={{width : '100%', height : '90%',borderRadius : 5,}}/>
                         <Icon name='close' style={{backgroundColor : '#fff', position : 'absolute', top : 15, right : 35, borderRadius : 15, padding : 3, fontSize : 15, color : 'red'}} onPress={()=>setImage("")}/>
                     </View> : ""
                 }
