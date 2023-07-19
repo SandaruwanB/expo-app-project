@@ -8,7 +8,6 @@ import * as ImagePicker from 'expo-image-picker'
 import axios from 'axios'
 import * as SecureStorage from 'expo-secure-store'
 import config from '../../apiConfig'
-import db from '../../firebaseConfig'
 
 
 const width = Dimensions.get('window').width;
@@ -22,10 +21,6 @@ const Post = () => {
     const [textPost, setTextPost] = useState("");
     const [postHeading, setPostHeading] = useState("");
     const [user,setUser] = useState("");
-
-    useEffect(()=>{
-        console.log(db);
-    })
 
     const getToken = async () =>{
         try {
@@ -42,9 +37,10 @@ const Post = () => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes : ImagePicker.MediaTypeOptions.Images,
             quality : 1,
+            base64 : true,
         });
         if(!result.canceled){
-            setImage(result.assets[0]);
+            setImage(result.assets[0].base64);
         }
         else{
             console.log("canceled");
@@ -58,7 +54,7 @@ const Post = () => {
             quality : 1,
         });
         if(!result.canceled){
-            setImage(result.assets[0]);
+            setImage(result.assets[0].base64);
         }
         else{
             console.log("canceled");
@@ -73,11 +69,14 @@ const Post = () => {
             alert("You Missed the Post Body")
         }
         else{
-            await axios.post(`${config.uri}/post`, {
-                category : category,
+            await axios.post(`${config.uri}/post`, { 
+                image : image,
                 user : user,
+                category : category,
+                postHeading : postHeading,
+                textPost : textPost,
             }).then(res=>{
-                console.log(res.data);
+                
             })
         }
     }
@@ -103,14 +102,15 @@ const Post = () => {
                 <View style={[{width : '100%'}, image !== "" ? {height : '10%'} : {height : '30%'}]}>
                     <TextInput numberOfLines={2} multiline={true} placeholder='What do you want to share about?' value={postHeading} style={styles.postHeadingInput} onChangeText={text=>setPostHeading(text)}/>
                 </View>
+
                 {
                     image !== "" ? 
                     <View style={{width : '100%', height : '40%', marginTop : 20, paddingHorizontal : 20, position : 'relative'}}>
-                        <Image source={{uri : image.uri}} style={{width : '100%', height : '90%',borderRadius : 5,}}/>
+                        <Image source={{uri : `data:image/png;base64,${image}`}} style={{width : '100%', height : '90%',borderRadius : 5,}}/>
                         <Icon name='close' style={{backgroundColor : '#fff', position : 'absolute', top : 15, right : 35, borderRadius : 15, padding : 3, fontSize : 15, color : 'red'}} onPress={()=>setImage("")}/>
                     </View> : ""
                 }
- 
+
                 <View style={styles.inputContent}>
                     <View style={styles.contnetInputs}>
                         <TouchableOpacity style={styles.contentMid} onPress={()=>pickImageAsync()}>
