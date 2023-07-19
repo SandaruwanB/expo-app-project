@@ -19,6 +19,7 @@ const UserHome = () => {
     const [postContent, setPostContent] = useState("");
     const [postErrCategory, setPostErrCategory] = useState(false);
     const [postErrText, setPostErrText] = useState(false);
+    const [image, setImage] = useState("");
 
     const getToken = async () =>{
         try {
@@ -29,6 +30,12 @@ const UserHome = () => {
         }
     }
     getToken();
+
+    useEffect(()=>{
+        axios.get(`${config.uri}/posts`).then(res=>{
+            setImage(res.data.result[0].post[0].image);
+        })
+    },[setImage]);
 
     const quickPost = async ()=>{
         if(category === "Select the Category" && postContent === ""){
@@ -106,6 +113,12 @@ const UserHome = () => {
                             </TouchableOpacity>
                         </View>
                     </View>
+                    {
+                        image !== "" ?
+                        <View style={{width : '100%', height : '10%', marginTop : 20, paddingHorizontal : 20, position : 'relative'}}>
+                            <Image source={{uri : `data:image/png;base64,${image}`}} style={{width : '100%', height : '90%',borderRadius : 5,}}/>
+                        </View>  : ""
+                    }
                     <View style={{padding : 20, backgroundColor : '#F2F8FF',}}>
                         <Text style={{fontSize : 18, textAlign : 'justify',}}>test test test test test test test test test test test test test test test test test test test test test test ?</Text>
                     </View>

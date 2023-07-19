@@ -76,7 +76,7 @@ const Post = () => {
                 postHeading : postHeading,
                 textPost : textPost,
             }).then(res=>{
-                
+                console.log(res.data);
             })
         }
     }
