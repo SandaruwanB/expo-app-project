@@ -7,6 +7,7 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 import FaFa from 'react-native-vector-icons/FontAwesome5';
 import MatIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MatirialIcon from 'react-native-vector-icons/MaterialIcons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 import config from '../../apiConfig'
 
@@ -17,8 +18,6 @@ const UserHome = () => {
     const [bottomTabOpen, setBottomTabOpen] = useState(false);
     const [categoryOpen, setCategoryOpen] = useState(false);
     const [postContent, setPostContent] = useState("");
-    const [postErrCategory, setPostErrCategory] = useState(false);
-    const [postErrText, setPostErrText] = useState(false);
     const [image, setImage] = useState("");
 
     const getToken = async () =>{
@@ -39,20 +38,15 @@ const UserHome = () => {
 
     const quickPost = async ()=>{
         if(category === "Select the Category" && postContent === ""){
-            setPostErrCategory(true);
-            setPostErrText(true);
+            alert("All Fields are Required");
         }
         else if(category === "Select the Category"){
-            setPostErrCategory(true);
-            setPostErrText(true);
+            alert("Please Choose the Category");
         }
         else if(postContent === ""){
-            setPostErrCategory(false);
-            setPostErrText(true);
+            alert("Post Body Cannot Empty");
         }
         else{
-            setPostErrCategory(false);
-            setPostErrText(false);
             await axios.post(`${config.uri}/quickPost`, {
                 user : user,
                 category : category,
@@ -78,24 +72,16 @@ const UserHome = () => {
             <ScrollView style={{height : '100%', marginBottom : 100,}}>
                 <View style={[styles.quickPost, ]}>
                     <Text style={[styles.quickText]}>Quick Post</Text>
-                    <View style={[styles.categorySelection, postErrCategory ? styles.errorInput : ""]}>
+                    <View style={[styles.categorySelection]}>
                         <TouchableWithoutFeedback style={{width : '100%', height : '100%',}} onPress={()=>setCategoryOpen(true)}>
                             <Text style={{paddingLeft : 3, color : '#2E3A59'}}>{category}</Text>
                         </TouchableWithoutFeedback>                         
                     </View>
-                    {
-                        postErrCategory ? <Text style={{width : '100%', textAlign : 'center', color : 'red', paddingBottom : 10,}}>This Field is Required</Text> : ""
-                    }
-                    <TextInput placeholder='Your Post' style={[styles.quickPostInput, postErrText ? styles.errorInput : ""]} onChangeText={text=>setPostContent(text)} multiline={true} numberOfLines={3}/>
-                    {
-                        postErrText ? <Text style={{width : '100%', textAlign : 'center', color : 'red', paddingTop : 10}}>This Field is Required</Text> : ""                        
-                    }
+                    <TextInput placeholder='Your Post' style={[styles.quickPostInput]} onChangeText={text=>setPostContent(text)} multiline={true} numberOfLines={3}/>
                     <TouchableOpacity style={styles.postbtn} onPress={()=>quickPost()}>
                         <Text style={styles.postBtnText}>Post</Text>
-                    </TouchableOpacity>
-                    
+                    </TouchableOpacity>                    
                 </View>
-
                 <View style={styles.content}>
                     <View style={[styles.iconContentList, { paddingHorizontal : 20, paddingBottom : 15, paddingTop : 10,}]}>
                         <View style={{flexDirection : 'row', position : 'relative',}}>
@@ -115,8 +101,8 @@ const UserHome = () => {
                     </View>
                     {
                         image !== "" ?
-                        <View style={{width : '100%', height : '10%', marginTop : 20, paddingHorizontal : 20, position : 'relative'}}>
-                            <Image source={{uri : `data:image/png;base64,${image}`}} style={{width : '100%', height : '90%',borderRadius : 5,}}/>
+                        <View style={{width : '100%', height : '20%', paddingHorizontal : 5, position : 'relative'}}>
+                            <Image source={{uri : `data:image/png;base64,${image}`}} style={{width : '100%', height : '90%',}}/>
                         </View>  : ""
                     }
                     <View style={{padding : 20, backgroundColor : '#F2F8FF',}}>
@@ -163,6 +149,12 @@ const UserHome = () => {
                         <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '30%', padding : 8,}}>
                             <FaFa name='plus' style={{fontSize : 18,}}/>
                             <Text>Follow</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback style={{width : '100%',}}>
+                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '37%', padding : 8,}}>
+                            <IonIcon name='md-open' style={{fontSize : 18,}}/>
+                            <Text>View Post</Text>
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback style={{width : '100%',}}>
