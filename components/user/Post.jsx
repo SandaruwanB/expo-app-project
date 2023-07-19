@@ -52,6 +52,7 @@ const Post = () => {
         const result = await ImagePicker.launchCameraAsync({
             mediaTypes : ImagePicker.MediaTypeOptions.Images,
             quality : 1,
+            base64 : true,
         });
         if(!result.canceled){
             setImage(result.assets[0].base64);
