@@ -38,6 +38,7 @@ const Post = () => {
             mediaTypes : ImagePicker.MediaTypeOptions.Images,
             quality : 1,
             base64 : true,
+            allowsEditing : true,
         });
         if(!result.canceled){
             setImage(result.assets[0].base64);
@@ -53,6 +54,7 @@ const Post = () => {
             mediaTypes : ImagePicker.MediaTypeOptions.Images,
             quality : 1,
             base64 : true,
+            allowsEditing : true,
         });
         if(!result.canceled){
             setImage(result.assets[0].base64);

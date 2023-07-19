@@ -101,7 +101,7 @@ const UserHome = () => {
                     </View>
                     {
                         image !== "" ?
-                        <View style={{width : '100%', height : '20%', paddingHorizontal : 5, position : 'relative'}}>
+                        <View style={{width : '100%', height : '100%', paddingHorizontal : 5, position : 'relative'}}>
                             <Image source={{uri : `data:image/png;base64,${image}`}} style={{width : '100%', height : '90%',}}/>
                         </View>  : ""
                     }
