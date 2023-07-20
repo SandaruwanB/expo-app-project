@@ -39,6 +39,7 @@ const Post = () => {
             quality : 1,
             base64 : true,
             allowsEditing : true,
+            aspect : [4,3]
         });
         if(!result.canceled){
             setImage(result.assets[0].base64);
@@ -55,6 +56,7 @@ const Post = () => {
             quality : 1,
             base64 : true,
             allowsEditing : true,
+            aspect : [4,3]
         });
         if(!result.canceled){
             setImage(result.assets[0].base64);
