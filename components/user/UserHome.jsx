@@ -19,6 +19,7 @@ const UserHome = () => {
     const [categoryOpen, setCategoryOpen] = useState(false);
     const [postContent, setPostContent] = useState("");
     const [image, setImage] = useState("");
+    const [posts, setPosts] = useState([]);
 
     const getToken = async () =>{
         try {
@@ -33,8 +34,9 @@ const UserHome = () => {
     useEffect(()=>{
         axios.get(`${config.uri}/posts`).then(res=>{
             setImage(res.data.result[0].post[0].image);
-        })
-    },[setImage]);
+            setPosts(res.data);
+        });
+    });
 
     const quickPost = async ()=>{
         if(category === "Select the Category" && postContent === ""){
@@ -88,7 +90,7 @@ const UserHome = () => {
                             <TouchableOpacity style={{flexDirection : 'row'}}>
                                 <Image source={require('../../assets/images/defaultUser.png')} style={styles.userImage}/>
                                 <View style={{marginLeft : 10,}}>
-                                    <Text style={{fontSize : 15, fontWeight : 'bold', color : '#222B45',}}>Kasun Nimantha</Text>
+                                    <Text style={{fontSize : 15, fontWeight : 'bold', color : '#222B45',}}>Sandaruwan Bandara</Text>
                                     <Text style={{fontSize : 12, color : '#8F9BB3',}}>Software Engineer</Text>
                                 </View>
                             </TouchableOpacity>
@@ -251,6 +253,7 @@ const styles = StyleSheet.create({
         marginTop : 6,
         backgroundColor : '#fff',
         padding : 8,
+        maxHeight : '100%',
     },
     topLine : {
         width : '96%',
