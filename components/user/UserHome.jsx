@@ -34,9 +34,10 @@ const UserHome = () => {
     useEffect(()=>{
         axios.get(`${config.uri}/posts`).then(res=>{
             setImage(res.data.result[1].post[0].image);
-            setPosts(res.data.result[0]);
+            setPosts(res.data.resultrs);
         });
     },[setPosts]);
+
 
     const quickPost = async ()=>{
         if(category === "Select the Category" && postContent === ""){
@@ -88,11 +89,11 @@ const UserHome = () => {
                 <View style={{width : '100%', marginTop : 8, backgroundColor : '#fff'}}>
                     <View style={{width : '100%', paddingVertical : 10,}}>
                         <View style={{flexDirection : 'row', justifyContent : 'space-between', marginTop : 5, paddingHorizontal : 20}}>
-                            <TouchableOpacity style={{flexDirection : 'row'}}>
+                            <TouchableOpacity style={{flexDirection : 'row'}} onPress={()=>console.log(posts)}>
                                     <Image source={require('../../assets/images/defaultUser.png')} style={{width : 45, height : 45, borderRadius : 45,}}/>
                                     <View style={{marginLeft : 15, marginTop : 2}}>
-                                        <Text>Kasun Nishantha</Text>
-                                        <Text>Software Engineer</Text>
+                                        <Text style={{fontWeight : 'bold', fontSize : 16,}}>Chathuka Perera</Text>
+                                        <Text style={{fontSize : 13}}>Graphic Designer</Text>
                                     </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={()=>setBottomTabOpen(true)}>
@@ -135,8 +136,8 @@ const UserHome = () => {
                             <TouchableOpacity style={{flexDirection : 'row'}}>
                                     <Image source={require('../../assets/images/defaultUser.png')} style={{width : 45, height : 45, borderRadius : 45,}}/>
                                     <View style={{marginLeft : 15, marginTop : 2}}>
-                                        <Text>Kasun Nishantha</Text>
-                                        <Text>Software Engineer</Text>
+                                        <Text style={{fontWeight : 'bold', fontSize : 16,}}>Sandaruwan Bandara</Text>
+                                        <Text style={{fontSize : 13}}>Software Engineer</Text>
                                     </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={()=>setBottomTabOpen(true)}>
@@ -150,10 +151,10 @@ const UserHome = () => {
                         <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
                             <View style={{flexDirection : 'row'}}>
                                 <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
-                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>116 persons starred</Text>
+                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>516 persons starred</Text>
                             </View> 
                             <View>
-                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>35. comments</Text>
+                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>335. comments</Text>
                             </View>
                         </View>
                         <View style={{paddingHorizontal : 12,}}>
