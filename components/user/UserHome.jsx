@@ -152,7 +152,8 @@ const UserHome = () => {
                                         <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{padding : 20, backgroundColor : '#F2F8FF', marginTop : 20, }}>
+                                {post.post[0].title ? <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>{ post.post[0].title }</Text> : ""} 
+                                <View style={[{padding : 20, backgroundColor : '#F2F8FF',}, post.post[0].title ? "" : {marginTop : 20}]}>
                                     <Text style={{fontSize : 18, textAlign : 'justify',}}>{post.post[0].text}</Text>
                                 </View>
                                 <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>

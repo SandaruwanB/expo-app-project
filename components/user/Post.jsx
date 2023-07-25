@@ -21,6 +21,7 @@ const Post = () => {
     const [textPost, setTextPost] = useState("");
     const [postHeading, setPostHeading] = useState("");
     const [user,setUser] = useState("");
+    const [textInput, setTextInput] = useState(false);
 
     const getToken = async () =>{
         try {
@@ -91,7 +92,7 @@ const Post = () => {
             <View style={styles.header}>
                 <View style={styles.topbar}>
                     <View style={{marginLeft : '5%',}}>
-                        <Icon name='close' style={styles.closeBtn} onPress={()=>{setImage("");setCategory("Select the Category");setPostHeading("");navigate.goBack();}}/>
+                        <Icon name='close' style={styles.closeBtn} onPress={()=>{setImage("");setCategory("Select the Category");setPostHeading("");setTextInput(false);setTextPost("");navigate.goBack();}}/>
                     </View>
                     <View style={{marginLeft: '57%',}}>
                         <TouchableOpacity style={styles.postBtn} onPress={()=>post()}>
@@ -104,7 +105,7 @@ const Post = () => {
                         <Text style={styles.placeholderStyle}>{category}</Text>
                     </TouchableWithoutFeedback>
                 </View>
-                <View style={[{width : '100%'}, image !== "" ? {height : '10%'} : {height : '30%'}]}>
+                <View style={[{width : '100%'}, image !== "" || textInput === true ? {height : '10%'} : {height : '30%'}]}>
                     <TextInput numberOfLines={2} multiline={true} placeholder='What do you want to share about?' value={postHeading} style={styles.postHeadingInput} onChangeText={text=>setPostHeading(text)}/>
                 </View>
 
@@ -115,22 +116,29 @@ const Post = () => {
                         <Icon name='close' style={{backgroundColor : '#fff', position : 'absolute', top : 15, right : 35, borderRadius : 15, padding : 3, fontSize : 15, color : 'red'}} onPress={()=>setImage("")}/>
                     </View> : ""
                 }
+                {
+                    textInput ?
+                        <View style={{width : '100%', height : '40%', marginTop : 20}}>
+                            <TextInput numberOfLines={2} multiline={true} placeholder='Enter Text Post Here?' value={textPost} style={styles.postHeadingInput} onChangeText={text=>setTextPost(text)}/>
+                        </View>   
+                    : ""
+                }
 
                 <View style={styles.inputContent}>
                     <View style={styles.contnetInputs}>
-                        <TouchableOpacity style={styles.contentMid} onPress={()=>pickImageAsync()}>
+                        <TouchableOpacity style={styles.contentMid} onPress={()=>{pickImageAsync(); setTextInput(false); setTextPost("")}}>
                             <Icon name='image' style={[styles.closeBtn, {textAlign : 'center', color : '#3366FF'}]}/>
                             <Text style={{textAlign : 'center', marginTop : 5,}}>Add Image</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.contnetInputs}>
-                        <TouchableOpacity style={styles.contentMid}>
+                        <TouchableOpacity style={styles.contentMid} onPress={()=>{setTextInput(true); setImage("")}}>
                             <Icon name='text' style={[styles.closeBtn, {textAlign : 'center', color : '#3366FF'}]}/>
                             <Text style={{textAlign : 'center', marginTop : 5,}}>Add Text</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.contnetInputs}>
-                        <TouchableOpacity style={styles.contentMid} onPress={()=>pickerCameraImageAsync()}>
+                        <TouchableOpacity style={styles.contentMid} onPress={()=>{pickerCameraImageAsync(); setTextInput(false); setTextPost("")}}>
                             <Icon name='camera' style={[styles.closeBtn, {textAlign : 'center', color : '#3366FF'}]}/>
                             <Text style={{textAlign : 'center', marginTop : 5,}}>Open Camera</Text>
                         </TouchableOpacity>
