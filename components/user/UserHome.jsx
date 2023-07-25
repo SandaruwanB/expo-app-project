@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput, Image, TouchableWithoutFeedback, Alert} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput, Image, TouchableWithoutFeedback, Alert, RefreshControl} from 'react-native';
 import * as SecureStorage from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
 import { BottomSheet } from 'react-native-btr';
@@ -21,6 +21,7 @@ const UserHome = () => {
     const [image, setImage] = useState("");
     const [posts, setPosts] = useState([]);
     const [users, setUsers] = useState([]);
+    const [refreshing,setRefreshing] = useState(false);
 
     const getToken = async () =>{
         try {
@@ -61,11 +62,24 @@ const UserHome = () => {
             })
         }
     }
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            axios.get(`${config.uri}/posts`).then(res=>{
+                setImage(res.data.posts[2].post[0].image);
+                setPosts(res.data.posts);
+                setUsers(res.data.users);
+                setPostContent("");
+            });
+            setRefreshing(false);
+        }, 2000);
+    }, []);
     
 
     return (
         <View style={styles.conatiner}>
-            <ScrollView style={{height : '100%', marginBottom : 200,}}>
+            <ScrollView style={{height : '100%', marginBottom : 200,}} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 <View style={[styles.quickPost, ]}>
                     <Text style={[styles.quickText]}>Quick Post</Text>
                     <View style={[styles.categorySelection]}>
@@ -73,103 +87,106 @@ const UserHome = () => {
                             <Text style={{paddingLeft : 3, color : '#2E3A59'}}>{category}</Text>
                         </TouchableWithoutFeedback>                         
                     </View>
-                    <TextInput placeholder='Your Post' style={[styles.quickPostInput]} onChangeText={text=>setPostContent(text)} multiline={true} numberOfLines={3}/>
+                    <TextInput placeholder='Your Post' value={postContent} style={[styles.quickPostInput]} onChangeText={text=>setPostContent(text)} multiline={true} numberOfLines={3}/>
                     <TouchableOpacity style={styles.postbtn} onPress={()=>quickPost()}>
                         <Text style={styles.postBtnText}>Post</Text>
                     </TouchableOpacity>                    
                 </View>
-
-                <View style={{width : '100%', marginTop : 8, backgroundColor : '#fff'}}>
-                    <View style={{width : '100%', paddingVertical : 10,}}>
-                        <View style={{flexDirection : 'row', justifyContent : 'space-between', marginTop : 5, paddingHorizontal : 20}}>
-                            <TouchableOpacity style={{flexDirection : 'row'}} onPress={()=>console.log(posts)}>
-                                    <Image source={require('../../assets/images/defaultUser.png')} style={{width : 50, height : 50, borderRadius : 45, marginTop : 4,}}/>
-                                    <View style={{marginLeft : 15, marginTop : 2}}>
-                                        <Text style={{fontWeight : 'bold', fontSize : 15,}}>{users[0].name}</Text>
-                                        <Text style={{fontSize : 12}}>Graphic Designer</Text>
-                                        <Text style={{fontSize : 11}}>{posts.length > 0 ? posts[1].post[0].postDate : ""}</Text>
+                {
+                    posts.map((post)=>{
+                        return <View style={{width : '100%', marginTop : 8, backgroundColor : '#fff'}} key={post.post[0]._id}>
+                            { post.post[0].image ?  
+                            <View style={{width : '100%', paddingVertical : 10,}}>
+                                <View style={{flexDirection : 'row', justifyContent : 'space-between', marginTop : 5, paddingHorizontal : 20}}>
+                                    <TouchableOpacity style={{flexDirection : 'row'}} onPress={()=>console.log(posts)}>
+                                        <Image source={require('../../assets/images/defaultUser.png')} style={{width : 50, height : 50, borderRadius : 45, marginTop : 4,}}/>
+                                        <View style={{marginLeft : 15, marginTop : 2}}>
+                                            <Text style={{fontWeight : 'bold'}}>{users.length > 0 ? users[0].name : ""}</Text>
+                                            <Text style={{fontSize : 12}}>Graphic Designer</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>setBottomTabOpen(true)}>
+                                        <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
+                                    </TouchableOpacity>
+                                </View>
+                                <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>{ post.post[0].title }</Text>
+                                <Image  source={{uri : `data:image/png;base64,${post.post[0].image}`}} style={{height : 300, width : '100%'}}/>
+                                <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
+                                    <View style={{flexDirection : 'row'}}>
+                                        <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
+                                        <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{ (post.post[0].starred).length } persons starred</Text>
+                                    </View> 
+                                    <View>
+                                        <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{ (post.post[0].comments).length } comments</Text>
                                     </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>setBottomTabOpen(true)}>
-                                <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
-                            </TouchableOpacity>
-                        </View>
-                        <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>{posts.length > 0 ? posts[1].post[0].title : ""}</Text>
-                        <Image  source={{uri : `data:image/png;base64,${image}`}} style={{height : 300, width : '100%'}}/>
-                        <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
-                            <View style={{flexDirection : 'row'}}>
-                                <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
-                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{posts.length > 0 ? (posts[1].post[0].starred).length : "" } persons</Text>
-                            </View> 
-                            <View>
-                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{posts.length > 0 ? (posts[1].post[0].comments).length : "" }  comments</Text>
-                            </View>
-                        </View>
-                        <View style={{paddingHorizontal : 12,}}>
-                            <View style={{width : '100%', height : 0.9, backgroundColor : '#2E3A59', marginTop : 10,}}></View>
-                            <View style={{flexDirection : 'row', justifyContent : 'space-between',  paddingVertical : 10,}}>
-                                <View></View>
-                                <View>
-                                    <IonIcons name='star' style={{ color : '#FFC94D', display : 'none', fontSize : 16}}/>
-                                    <IonIcons name='star-outline'  style={{textAlign : 'center', fontSize : 16 }}/>
-                                    <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13, display : 'none',}}>Starred</Text>
-                                    <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Star</Text>
                                 </View>
-                                <View>
-                                    <FaFa name='comment-dots' style={{textAlign : 'center', fontSize : 16}}/>
-                                    <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Comment</Text>
-                                </View>
-                                <View></View>
-                            </View>
-                        </View>                        
-                    </View>
-                </View> 
-                <View style={{width : '100%', marginTop : 8, backgroundColor : '#fff'}}>
-                    <View style={{width : '100%', paddingVertical : 10,}}>
-                        <View style={{flexDirection : 'row', justifyContent : 'space-between', marginTop : 5, paddingHorizontal : 20}}>
-                            <TouchableOpacity style={{flexDirection : 'row'}}>
-                                    <Image source={require('../../assets/images/defaultUser.png')} style={{width : 45, height : 45, borderRadius : 45,}}/>
-                                    <View style={{marginLeft : 15, marginTop : 2}}>
-                                        <Text style={{fontWeight : 'bold', fontSize : 16,}}>Sandaruwan Bandara</Text>
-                                        <Text style={{fontSize : 13}}>Software Engineer</Text>
+                                <View style={{paddingHorizontal : 12,}}>
+                                <View style={{width : '100%', height : 0.9, backgroundColor : '#2E3A59', marginTop : 10,}}></View>
+                                    <View style={{flexDirection : 'row', justifyContent : 'space-between',  paddingVertical : 10,}}>
+                                        <View></View>
+                                        <View>
+                                            <IonIcons name='star' style={{ color : '#FFC94D', display : 'none', fontSize : 16}}/>
+                                            <IonIcons name='star-outline'  style={{textAlign : 'center', fontSize : 16 }}/>
+                                            <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13, display : 'none',}}></Text>
+                                            <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Star</Text>
+                                        </View>
+                                        <View>
+                                            <FaFa name='comment-dots' style={{textAlign : 'center', fontSize : 16}}/>
+                                            <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Comment</Text>
+                                        </View>
+                                        <View></View>
                                     </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>setBottomTabOpen(true)}>
-                                <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
-                            </TouchableOpacity>
-                        </View>
-                        <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>{}</Text>
-                        <View style={{padding : 20, backgroundColor : '#F2F8FF',}}>
-                            <Text style={{fontSize : 18, textAlign : 'justify',}}>test test test test test test test test test test test test test test test test test test test test test test ?</Text>
-                        </View>
-                        <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
-                            <View style={{flexDirection : 'row'}}>
-                                <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
-                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>516 persons starred</Text>
-                            </View> 
-                            <View>
-                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>335. comments</Text>
+                                </View>          
                             </View>
-                        </View>
-                        <View style={{paddingHorizontal : 12,}}>
-                            <View style={{width : '100%', height : 0.9, backgroundColor : '#2E3A59', marginTop : 10,}}></View>
-                            <View style={{flexDirection : 'row', justifyContent : 'space-between',  paddingVertical : 10,}}>
-                                <View></View>
-                                <View>
-                                    <IonIcons name='star' style={{ color : '#FFC94D', display : 'none', fontSize : 16}}/>
-                                    <IonIcons name='star-outline'  style={{textAlign : 'center', fontSize : 16 }}/>
-                                    <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13, display : 'none',}}>Starred</Text>
-                                    <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Star</Text>
+                            : 
+                            <View style={{width : '100%', paddingVertical : 10,}}>
+                                <View style={{flexDirection : 'row', justifyContent : 'space-between', marginTop : 5, paddingHorizontal : 20}}>
+                                    <TouchableOpacity style={{flexDirection : 'row'}}>
+                                            <Image source={require('../../assets/images/defaultUser.png')} style={{width : 45, height : 45, borderRadius : 45,}}/>
+                                            <View style={{marginLeft : 15, marginTop : 2}}>
+                                                <Text style={{fontWeight : 'bold', fontSize : 16,}}>Sandaruwan Bandara</Text>
+                                                <Text style={{fontSize : 13}}>Software Engineer</Text>
+                                            </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>setBottomTabOpen(true)}>
+                                        <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
+                                    </TouchableOpacity>
                                 </View>
-                                <View>
-                                    <FaFa name='comment-dots' style={{textAlign : 'center', fontSize : 16}}/>
-                                    <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Comment</Text>
+                                <View style={{padding : 20, backgroundColor : '#F2F8FF', marginTop : 20, }}>
+                                    <Text style={{fontSize : 18, textAlign : 'justify',}}>{post.post[0].text}</Text>
                                 </View>
-                                <View></View>
+                                <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
+                                    <View style={{flexDirection : 'row'}}>
+                                        <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
+                                        <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].starred).length} persons starred</Text>
+                                    </View> 
+                                    <View>
+                                        <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{ (post.post[0].comments).length } comments</Text>
+                                    </View>
+                                </View>
+                                <View style={{paddingHorizontal : 12,}}>
+                                    <View style={{width : '100%', height : 0.9, backgroundColor : '#2E3A59', marginTop : 10,}}></View>
+                                    <View style={{flexDirection : 'row', justifyContent : 'space-between',  paddingVertical : 10,}}>
+                                        <View></View>
+                                        <View>
+                                            <IonIcons name='star' style={{ color : '#FFC94D', display : 'none', fontSize : 16}}/>
+                                            <IonIcons name='star-outline'  style={{textAlign : 'center', fontSize : 16 }}/>
+                                            <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13, display : 'none',}}>Starred</Text>
+                                            <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Star</Text>
+                                        </View>
+                                        <View>
+                                            <FaFa name='comment-dots' style={{textAlign : 'center', fontSize : 16}}/>
+                                            <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Comment</Text>
+                                        </View>
+                                        <View></View>
+                                    </View>
+                                </View>                        
                             </View>
-                        </View>                        
-                    </View>
-                </View> 
+                            }
+                        </View>
+                    })
+                }
+ 
             </ScrollView>
 
             <BottomSheet
