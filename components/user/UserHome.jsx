@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput, Image, TouchableWithoutFeedback} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput, Image, TouchableWithoutFeedback, Alert} from 'react-native';
 import * as SecureStorage from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
 import { BottomSheet } from 'react-native-btr';
@@ -14,12 +14,13 @@ import config from '../../apiConfig'
 const UserHome = () => {
     const [ user, setUser ] = useState("");
     const navigate = useNavigation();
-    const [category, setCategory] = useState("Select the Category");
+    const [category, setCategory] = useState("Select the Caegory");
     const [bottomTabOpen, setBottomTabOpen] = useState(false);
     const [categoryOpen, setCategoryOpen] = useState(false);
     const [postContent, setPostContent] = useState("");
     const [image, setImage] = useState("");
     const [posts, setPosts] = useState([]);
+    const [users, setUsers] = useState([]);
 
     const getToken = async () =>{
         try {
@@ -33,21 +34,22 @@ const UserHome = () => {
 
     useEffect(()=>{
         axios.get(`${config.uri}/posts`).then(res=>{
-            setImage(res.data.result[1].post[0].image);
-            setPosts(res.data.resultrs);
+            setImage(res.data.posts[2].post[0].image);
+            setPosts(res.data.posts);
+            setUsers(res.data.users);
         });
-    },[setPosts]);
+    },[setPosts, setUsers]);
 
 
     const quickPost = async ()=>{
         if(category === "Select the Category" && postContent === ""){
-            alert("All Fields are Required");
+            Alert.alert("All Fields are Required", "Please choose category and enter the post message.", [{text : "got it"}]);
         }
         else if(category === "Select the Category"){
-            alert("Please Choose the Category");
+            Alert.alert("All Fields are Required", "Please choose category before submit.", [{text : "got it"}]);
         }
         else if(postContent === ""){
-            alert("Post Body Cannot Empty");
+            Alert.alert("All Fields are Required", "Post body cannot empty. please fill post body before submit.", [{text : "got it"}]);
         }
         else{
             await axios.post(`${config.uri}/quickPost`, {
@@ -60,15 +62,6 @@ const UserHome = () => {
         }
     }
     
-    /*const signOut = async ()=>{
-        try {
-            await SecureStorage.deleteItemAsync("auth");
-            await SecureStorage.deleteItemAsync("role");
-            navigate.navigate("Login");
-        } catch (error) {
-            console.log(error);
-        }
-    }*/
 
     return (
         <View style={styles.conatiner}>
@@ -90,25 +83,26 @@ const UserHome = () => {
                     <View style={{width : '100%', paddingVertical : 10,}}>
                         <View style={{flexDirection : 'row', justifyContent : 'space-between', marginTop : 5, paddingHorizontal : 20}}>
                             <TouchableOpacity style={{flexDirection : 'row'}} onPress={()=>console.log(posts)}>
-                                    <Image source={require('../../assets/images/defaultUser.png')} style={{width : 45, height : 45, borderRadius : 45,}}/>
+                                    <Image source={require('../../assets/images/defaultUser.png')} style={{width : 50, height : 50, borderRadius : 45, marginTop : 4,}}/>
                                     <View style={{marginLeft : 15, marginTop : 2}}>
-                                        <Text style={{fontWeight : 'bold', fontSize : 16,}}>Chathuka Perera</Text>
-                                        <Text style={{fontSize : 13}}>Graphic Designer</Text>
+                                        <Text style={{fontWeight : 'bold', fontSize : 15,}}>{users[0].name}</Text>
+                                        <Text style={{fontSize : 12}}>Graphic Designer</Text>
+                                        <Text style={{fontSize : 11}}>{posts.length > 0 ? posts[1].post[0].postDate : ""}</Text>
                                     </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={()=>setBottomTabOpen(true)}>
                                 <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
                             </TouchableOpacity>
                         </View>
-                        <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>dasdhashj aghs adsh</Text>
+                        <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>{posts.length > 0 ? posts[1].post[0].title : ""}</Text>
                         <Image  source={{uri : `data:image/png;base64,${image}`}} style={{height : 300, width : '100%'}}/>
                         <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
                             <View style={{flexDirection : 'row'}}>
                                 <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
-                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>116 persons starred</Text>
+                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{posts.length > 0 ? (posts[1].post[0].starred).length : "" } persons</Text>
                             </View> 
                             <View>
-                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>35. comments</Text>
+                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{posts.length > 0 ? (posts[1].post[0].comments).length : "" }  comments</Text>
                             </View>
                         </View>
                         <View style={{paddingHorizontal : 12,}}>
@@ -144,7 +138,7 @@ const UserHome = () => {
                                 <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
                             </TouchableOpacity>
                         </View>
-                        <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>dasdhashj aghs adsh</Text>
+                        <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>{}</Text>
                         <View style={{padding : 20, backgroundColor : '#F2F8FF',}}>
                             <Text style={{fontSize : 18, textAlign : 'justify',}}>test test test test test test test test test test test test test test test test test test test test test test ?</Text>
                         </View>
