@@ -76,6 +76,18 @@ const UserHome = () => {
         }, 2000);
     }, []);
     
+    const getUserAndPosition = (userid)=>{
+        const userIndex = users.findIndex((item, i)=>{
+            return item.id === userid;
+        });
+
+        return (
+            <View style={{marginLeft : 15, marginTop : 2}}>
+                <Text style={{fontWeight : 'bold'}}>{users[userIndex].name}</Text>
+                <Text style={{fontSize : 12}}>{users[userIndex].jobTitle ? users[userIndex].jobTitle : "--"}</Text>
+            </View>
+        );
+    }
 
     return (
         <View style={styles.conatiner}>
@@ -100,10 +112,7 @@ const UserHome = () => {
                                 <View style={{flexDirection : 'row', justifyContent : 'space-between', marginTop : 5, paddingHorizontal : 20}}>
                                     <TouchableOpacity style={{flexDirection : 'row'}} onPress={()=>console.log(posts)}>
                                         <Image source={require('../../assets/images/defaultUser.png')} style={{width : 50, height : 50, borderRadius : 45, marginTop : 4,}}/>
-                                        <View style={{marginLeft : 15, marginTop : 2}}>
-                                            <Text style={{fontWeight : 'bold'}}>{users.length > 0 ? users[0].name : ""}</Text>
-                                            <Text style={{fontSize : 12}}>Graphic Designer</Text>
-                                        </View>
+                                            {getUserAndPosition(post.userid)}
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={()=>setBottomTabOpen(true)}>
                                         <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
@@ -143,10 +152,7 @@ const UserHome = () => {
                                 <View style={{flexDirection : 'row', justifyContent : 'space-between', marginTop : 5, paddingHorizontal : 20}}>
                                     <TouchableOpacity style={{flexDirection : 'row'}}>
                                             <Image source={require('../../assets/images/defaultUser.png')} style={{width : 45, height : 45, borderRadius : 45,}}/>
-                                            <View style={{marginLeft : 15, marginTop : 2}}>
-                                                <Text style={{fontWeight : 'bold', fontSize : 16,}}>Sandaruwan Bandara</Text>
-                                                <Text style={{fontSize : 13}}>Software Engineer</Text>
-                                            </View>
+                                            {getUserAndPosition(post.userid)}
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={()=>setBottomTabOpen(true)}>
                                         <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
