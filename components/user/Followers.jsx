@@ -39,26 +39,35 @@ const Followers = () => {
         <View style={styles.container}>
             <ScrollView style={{marginBottom : 120,}}>
                 <View style={styles.content}>
-                    <Text>60 Followers</Text>
+                    <Text>{followers.length} Followers</Text>
                 </View>
                 <View style={styles.line}></View>
-                <View style={styles.item}>
-                    <View style={{ flexDirection : 'row', justifyContent : 'space-between', paddingVertical : 12, }}>
-                        <View style={{ width : '10%', }}>
-                            <Image source={require('../../assets/images/defaultUser.png')} style={{ width : 45, height : 45, borderRadius : 45, }} />
+                {followers.length > 0 ?
+                    <View style={styles.item}>
+                        <View style={{ flexDirection : 'row', justifyContent : 'space-between', paddingVertical : 12, }}>
+                            <View style={{ width : '10%', }}>
+                                <Image source={require('../../assets/images/defaultUser.png')} style={{ width : 45, height : 45, borderRadius : 45, }} />
+                            </View>
+                            <View style={{ width : '50%', }}>
+                                <Text style={{ fontWeight : 'bold', fontSize : 15, marginTop : 2, }}>Sandaruwan Bandara</Text>
+                                <Text style={{ fontSize : 13, }}>Software Engineer</Text>
+                            </View>
+                            <View>
+                                <TouchableOpacity onPress={()=>{setBottomSheetOpen(true); console.log(followers)}}>
+                                    <MatIcon name='dots-vertical' style={{fontSize : 30, marginTop : 5,}}/>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                        <View style={{ width : '50%', }}>
-                            <Text style={{ fontWeight : 'bold', fontSize : 15, marginTop : 2, }}>Sandaruwan Bandara</Text>
-                            <Text style={{ fontSize : 13, }}>Software Engineer</Text>
-                        </View>
-                        <View>
-                            <TouchableOpacity onPress={()=>setBottomSheetOpen(true)}>
-                                <MatIcon name='dots-vertical' style={{fontSize : 30, marginTop : 5,}}/>
-                            </TouchableOpacity>
+                        <View style={[styles.line, {width : '82%', marginLeft : '18%',}]}></View>
+                    </View>
+                :
+                    <View style={styles.item}>
+                        <View style={{ flexDirection : 'row', justifyContent : 'center', paddingVertical : 12, }}>
+                            <Text>No Followers Found</Text>
                         </View>
                     </View>
-                    <View style={[styles.line, {width : '82%', marginLeft : '18%',}]}></View>
-                </View>
+                }
+
             </ScrollView>
             <BottomSheet
                 visible={bottonSheetOpen}
