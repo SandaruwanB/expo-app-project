@@ -75,16 +75,18 @@ const UserHome = () => {
             setRefreshing(false);
         }, 2000);
     }, []);
-    
-    const getUserAndPosition = (userid)=>{
+
+    const getUserAndPosition = (userid,date)=>{
         const userIndex = users.findIndex((item, i)=>{
             return item.id === userid;
         });
+        const day = date.substring(0, date.indexOf("T"));
 
         return (
             <View style={{marginLeft : 15, marginTop : 2}}>
                 <Text style={{fontWeight : 'bold'}}>{users[userIndex].name}</Text>
                 <Text style={{fontSize : 12}}>{users[userIndex].jobTitle ? users[userIndex].jobTitle : "--"}</Text>
+                <Text style={{fontSize : 12}}>{day}</Text>
             </View>
         );
     }
@@ -111,10 +113,10 @@ const UserHome = () => {
                             <View style={{width : '100%', paddingVertical : 10,}}>
                                 <View style={{flexDirection : 'row', justifyContent : 'space-between', marginTop : 5, paddingHorizontal : 20}}>
                                     <TouchableOpacity style={{flexDirection : 'row'}} onPress={()=>console.log(posts)}>
-                                        <Image source={require('../../assets/images/defaultUser.png')} style={{width : 50, height : 50, borderRadius : 45, marginTop : 4,}}/>
-                                            {getUserAndPosition(post.userid)}
+                                        <Image source={require('../../assets/images/defaultUser.png')} style={{width : 50, height : 50, borderRadius : 45, }}/>
+                                            {getUserAndPosition(post.userid, post.postDate)}
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={()=>setBottomTabOpen(true)}>
+                                    <TouchableOpacity onPress={()=>{setBottomTabOpen(true)}}>
                                         <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
                                     </TouchableOpacity>
                                 </View>
@@ -140,8 +142,10 @@ const UserHome = () => {
                                             <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Star</Text>
                                         </View>
                                         <View>
-                                            <FaFa name='comment-dots' style={{textAlign : 'center', fontSize : 16}}/>
-                                            <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Comment</Text>
+                                            <TouchableOpacity>
+                                                <FaFa name='comment-dots' style={{textAlign : 'center', fontSize : 16}}/>
+                                                <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Comment</Text>
+                                            </TouchableOpacity>
                                         </View>
                                         <View></View>
                                     </View>
@@ -152,7 +156,7 @@ const UserHome = () => {
                                 <View style={{flexDirection : 'row', justifyContent : 'space-between', marginTop : 5, paddingHorizontal : 20}}>
                                     <TouchableOpacity style={{flexDirection : 'row'}}>
                                             <Image source={require('../../assets/images/defaultUser.png')} style={{width : 45, height : 45, borderRadius : 45,}}/>
-                                            {getUserAndPosition(post.userid)}
+                                            {getUserAndPosition(post.userid, post.postDate)}
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={()=>setBottomTabOpen(true)}>
                                         <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
@@ -182,8 +186,10 @@ const UserHome = () => {
                                             <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Star</Text>
                                         </View>
                                         <View>
-                                            <FaFa name='comment-dots' style={{textAlign : 'center', fontSize : 16}}/>
-                                            <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Comment</Text>
+                                            <TouchableOpacity>
+                                                <FaFa name='comment-dots' style={{textAlign : 'center', fontSize : 16}}/>
+                                                <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Comment</Text>
+                                            </TouchableOpacity>
                                         </View>
                                         <View></View>
                                     </View>
