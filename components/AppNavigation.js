@@ -24,6 +24,9 @@ import EmailVerification from './EmailVerification'
 import Index from './user/index'
 import Search from './user/search'
 import Followings from './user/followings'
+import Messaging from './user/messaging'
+import SetPost from './user/setPost'
+import Notifications from './user/notifications'
 import Settings from './user/accountControl/settings'
 import Post from './user/accountControl/posts'
 import Profile from './user/accountControl/profile'
@@ -32,10 +35,21 @@ import Profile from './user/accountControl/profile'
 function AppBarHeader (){
     const navigate = useNavigation();
     return (
-        <Appbar.Header>
-            <TouchableOpacity onPress={()=>navigate.openDrawer()} style={{marginStart : 20}}>
-                <Avatar.Image size={40} source={require('../assets/images/defaultUser.png')}/>
-            </TouchableOpacity>
+        <Appbar.Header style={{width : '100%', justifyContent : 'space-between', paddingHorizontal : 20}}>
+            <View>
+                <TouchableOpacity onPress={()=>navigate.openDrawer()} style={{marginStart : 10, borderWidth : 1, borderColor : '#2E3A59', borderRadius: 50}}>
+                    <Avatar.Image size={40} source={require('../assets/images/defaultUser.png')}/>
+                </TouchableOpacity>
+            </View>
+            <View style={{position : 'relative'}}>
+                <TextInput style={{backgroundColor : '#E4E9F2', width : 220, padding : 4, borderRadius: 6, paddingLeft:30}} placeholder='Search...' onChangeText={(text)=>{navigate.navigate('search')}}/>
+                <IonIcons name={'search'} size={20} style={{position: 'absolute', top : 6, left: 4}}/>
+            </View>
+            <View>
+                <TouchableOpacity onPress={()=>navigate.navigate('messaging')}>
+                    <MatIcons name='android-messages' size={30} color={'#2E3A59'}/>
+                </TouchableOpacity>
+            </View>
         </Appbar.Header>
     );
 }
@@ -142,7 +156,7 @@ function BottomTab (){
             />
             <Tab.Screen 
                 name='post' 
-                component={Followings} 
+                component={SetPost} 
                 options={{
                     headerShown : false,
                     tabBarIcon : ({focused,color})=><MatIcons2 name={'post-add'} color={focused ? '#0057C2' : color} size={25} style={{marginTop : focused ? 3 : 8}}/>,
@@ -162,7 +176,7 @@ function BottomTab (){
             />
             <Tab.Screen 
                 name='notifications'
-                component={Followings} 
+                component={Notifications} 
                 options={{
                     headerShown : false,
                     tabBarIcon : ({focused,color})=><IonIcons name={'notifications'} color={focused ? '#0057C2' : color} size={22} style={{marginTop : focused ? 3 : 8}}/>,
@@ -197,6 +211,7 @@ const AppNavigation = () => {
                 <Stack.Screen name='userSettings' component={Settings} />
                 <Stack.Screen name='userProfile' component={Profile} />
                 <Stack.Screen name='userPosts' component={Post} />
+                <Stack.Screen name='messaging' component={Messaging} />
             </Stack.Navigator>
         </NavigationContainer>
     );
@@ -235,6 +250,9 @@ const styles = StyleSheet.create({
     },
     drawerSection : {
         marginTop: 40,
+    },
+    linearText : {
+
     }
 });
 
