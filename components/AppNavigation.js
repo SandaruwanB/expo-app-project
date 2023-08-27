@@ -8,8 +8,9 @@ import { createDrawerNavigator, DrawerItem, DrawerContentScrollView } from '@rea
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import * as SecureStorage from 'expo-secure-store'
 import MatIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MatIcons2 from 'react-native-vector-icons/MaterialIcons'
 import IonIcons from 'react-native-vector-icons/Ionicons'
-import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons'
+import FaFa5 from 'react-native-vector-icons/FontAwesome5'
 import axios from 'axios'
 import config from '../apiConfig'
 
@@ -134,8 +135,18 @@ function BottomTab (){
                 component={Search} 
                 options={{
                     headerShown : false,
-                    tabBarIcon : ({focused,color})=><IonIcons name={'search'} color={focused ? '#0057C2' : color} size={26} style={{marginTop : focused ? 3 : 8}}/>,
+                    tabBarIcon : ({focused,color})=><IonIcons name={'search'} color={focused ? '#0057C2' : color} size={24} style={{marginTop : focused ? 3 : 8}}/>,
                     tabBarLabel : ({focused, color})=><Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Search' : ""}</Text>,
+                    tabBarStyle : {elevation : 0, shadowOpacity : 0, borderWidth : 1, borderTopColor : '#C5CEE0', height : 60}
+                }}
+            />
+            <Tab.Screen 
+                name='post' 
+                component={Followings} 
+                options={{
+                    headerShown : false,
+                    tabBarIcon : ({focused,color})=><MatIcons2 name={'post-add'} color={focused ? '#0057C2' : color} size={25} style={{marginTop : focused ? 3 : 8}}/>,
+                    tabBarLabel : ({focused, color})=><Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Post' : ""}</Text>,
                     tabBarStyle : {elevation : 0, shadowOpacity : 0, borderWidth : 1, borderTopColor : '#C5CEE0', height : 60}
                 }}
             />
@@ -144,8 +155,18 @@ function BottomTab (){
                 component={Followings} 
                 options={{
                     headerShown : false,
-                    tabBarIcon : ({focused,color})=><SimpleLineIcon name={'user-following'} color={focused ? '#0057C2' : color} size={20} style={{marginTop : focused ? 3 : 8}}/>,
+                    tabBarIcon : ({focused,color})=><FaFa5 name={'users'} color={focused ? '#0057C2' : color} size={20} style={{marginTop : focused ? 3 : 8}}/>,
                     tabBarLabel : ({focused, color})=><Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Followers' : ""}</Text>,
+                    tabBarStyle : {elevation : 0, shadowOpacity : 0, borderWidth : 1, borderTopColor : '#C5CEE0', height : 60}
+                }}
+            />
+            <Tab.Screen 
+                name='notifications'
+                component={Followings} 
+                options={{
+                    headerShown : false,
+                    tabBarIcon : ({focused,color})=><IonIcons name={'notifications'} color={focused ? '#0057C2' : color} size={22} style={{marginTop : focused ? 3 : 8}}/>,
+                    tabBarLabel : ({focused, color})=><Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Notifications' : ""}</Text>,
                     tabBarStyle : {elevation : 0, shadowOpacity : 0, borderWidth : 1, borderTopColor : '#C5CEE0', height : 60}
                 }}
             />
