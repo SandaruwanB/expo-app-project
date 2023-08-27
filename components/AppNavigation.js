@@ -1,14 +1,14 @@
 
-import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
+import { Avatar, Title, Caption, Paragraph, Drawer, Text, TouchableRipple, Switch } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { createDrawerNavigator } from '@react-navigation/drawer'
+import { createDrawerNavigator, DrawerItem, DrawerContentScrollView } from '@react-navigation/drawer'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
 import * as SecureStorage from 'expo-secure-store'
-import Icon from 'react-native-vector-icons/MaterialIcons'
 import MatIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import FaIcon from 'react-native-vector-icons/FontAwesome'
+import IonIcons from 'react-native-vector-icons/Ionicons'
 
 // common
 import Home from './Home'
@@ -18,12 +18,85 @@ import EmailVerification from './EmailVerification'
 
 // common user
 import Index from './user/index'
+import Search from './user/search';
 
 function DrawerContent() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Drawer content</Text>
-      </View>
+        <DrawerContentScrollView>
+            <View style={styles.drawerContent}>
+                <View style={styles.userInfo}>
+                    <Avatar.Image 
+                        source={{
+                            uri : 'https://pbs.twimg.com/profile_images/952545910990495744/b59hSXUd_400x400.jpg',
+                        }}
+                        size={60}
+                    />
+                    <Title style={styles.title}>David Musthapa</Title>
+                    <Caption style={styles.caption}>@david</Caption>
+                    <View style={styles.row}>
+                        <View style={styles.section}>
+                            <Paragraph style={[styles.paragraph, styles.caption]}>
+                                200
+                            </Paragraph>
+                            <Caption style={styles.caption}>Following</Caption>
+                        </View>
+                        <View style={styles.section}>
+                            <Paragraph style={[styles.paragraph, styles.caption]}>
+                                1500
+                            </Paragraph>
+                            <Caption style={styles.caption}>Followers</Caption>
+                        </View>
+                    </View>
+                </View>
+                <Drawer.Section style={styles.drawerSection}>
+                    <DrawerItem 
+                        icon={({color,size})=><MatIcons name={'account-outline'} color={color} size={size}/>}
+                        label="Profile"
+                        onPress={()=>console.log("profile")}
+                    />
+                    <DrawerItem 
+                        icon={({color,size})=><MatIcons name={'post'} color={color} size={size}/>}
+                        label="Posts"
+                        onPress={()=>console.log("Posts")}
+                    />
+                </Drawer.Section>
+                <Drawer.Section style={styles.drawerSection}>
+                    <Drawer.Item
+                        icon={({color,size})=><IonIcons name={'settings-outline'} color={color} size={size}/>}
+                        label='Settings'
+                        onPress={()=>console.log("settings")}
+                    />
+                </Drawer.Section>
+            </View>
+        </DrawerContentScrollView>
+    );
+}
+
+function BottomTab (){
+    const Tab = createBottomTabNavigator();
+    return (
+        <Tab.Navigator>
+            <Tab.Screen 
+                name='home' 
+                component={Index} 
+                options={{
+                    headerShown : false,
+                    tabBarIcon : ({focused,color})=><MatIcons name={'home'} color={focused ? '#0057C2' : color} size={26} style={{marginTop : focused ? 3 : 8}}/>,
+                    tabBarLabel : ({focused, color})=><Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Home' : ""}</Text>,
+                    tabBarStyle : {elevation : 0, shadowOpacity : 0, borderWidth : 1, borderTopColor : '#C5CEE0', height : 60}
+                }}
+            />
+            <Tab.Screen 
+                name='search' 
+                component={Search} 
+                options={{
+                    headerShown : false,
+                    tabBarIcon : ({focused,color})=><IonIcons name={'search'} color={focused ? '#0057C2' : color} size={26} style={{marginTop : focused ? 3 : 8}}/>,
+                    tabBarLabel : ({focused, color})=><Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Search' : ""}</Text>,
+                    tabBarStyle : {elevation : 0, shadowOpacity : 0, borderWidth : 1, borderTopColor : '#C5CEE0', height : 60}
+                }}
+            />
+        </Tab.Navigator>
     );
 }
 
@@ -32,7 +105,7 @@ function DrawerOpen(){
 
     return (
         <Drawer.Navigator drawerContent={()=><DrawerContent/>}>
-            <Drawer.Screen name='userHome' component={Index}/>
+            <Drawer.Screen name='userHome' component={BottomTab}/>
         </Drawer.Navigator>
     );
 }
@@ -46,7 +119,7 @@ const AppNavigation = () => {
                 <Stack.Screen name='Login' component={Login} options={{headerShown : false}} />
                 <Stack.Screen name='Register' component={Register} options={{headerShown : false}} />
                 <Stack.Screen name='EmailVerify' component={EmailVerification} options={{headerShown : false}} />
-                <Stack.Screen name='userPannel' component={DrawerOpen} />
+                <Stack.Screen name='userPannel' component={DrawerOpen} options={{headerShown : false}} />
             </Stack.Navigator>
         </NavigationContainer>
     );
@@ -54,47 +127,37 @@ const AppNavigation = () => {
 
 
 const styles = StyleSheet.create({
-    container : {
-        width : '100%',
-        height : 110,
-        borderBottomColor : '#C5CEE0',
-        borderBottomWidth : 1,
-        position : 'relative',
-        backgroundColor : '#fff',
+    drawerContent : {
+        flex: 1,
     },
-    content : {
-        width : '100%',
-        height : 65,
-        position : 'absolute',
-        bottom : 0,
-        flexDirection : 'row',
-        justifyContent : 'center',
+    userInfo : {
+        paddingLeft: 20,
+        marginTop : 50,
     },
-    searchBar : {
-        width : '100%',
-        padding : 4,
-        backgroundColor : '#E4E9F2',
-        marginTop : '6%',
-        borderRadius : 5,
-        paddingLeft : 30,
+    title : {
+        marginTop: 10,
+        fontWeight: 'bold',
     },
-    searchIcon : {
-        position : 'absolute', 
-        top : 22, 
-        left : 5,
-        color : '#2E3A59',
+    caption : {
+        fontSize: 14,
+        lineHeight: 14,
     },
-    messageIcon : {
-        marginTop : 20,
-        marginLeft : 15,
-        color : '#2E3A59',
+    row : {
+        marginTop: 30,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    userIcon : {
-        width : 40,
-        height : 40,
-        borderRadius : 40,
-        marginTop : 15,
-        marginLeft : 15,
+    section : {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: 15,
+    },
+    paragraph : {
+        fontWeight: 'bold',
+        marginRight: 3,
+    },
+    drawerSection : {
+        marginTop: 40,
     }
 });
 
