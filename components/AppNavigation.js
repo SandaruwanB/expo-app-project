@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
-import { Avatar, Title, Caption, Paragraph, Drawer, Text } from 'react-native-paper';
+import { Avatar, Title, Caption, Paragraph, Drawer, Text, Appbar } from 'react-native-paper';
 import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createDrawerNavigator, DrawerItem, DrawerContentScrollView } from '@react-navigation/drawer'
@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import * as SecureStorage from 'expo-secure-store'
 import MatIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import IonIcons from 'react-native-vector-icons/Ionicons'
+import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons'
 import axios from 'axios'
 import config from '../apiConfig'
 
@@ -21,10 +22,22 @@ import EmailVerification from './EmailVerification'
 // common user
 import Index from './user/index'
 import Search from './user/search'
+import Followings from './user/followings'
 import Settings from './user/accountControl/settings'
 import Post from './user/accountControl/posts'
 import Profile from './user/accountControl/profile'
 
+
+function AppBarHeader (){
+    const navigate = useNavigation();
+    return (
+        <Appbar.Header>
+            <TouchableOpacity onPress={()=>navigate.openDrawer()} style={{marginStart : 20}}>
+                <Avatar.Image size={40} source={require('../assets/images/defaultUser.png')}/>
+            </TouchableOpacity>
+        </Appbar.Header>
+    );
+}
 
 function DrawerContent() {
     const navigate = useNavigation();
@@ -45,57 +58,59 @@ function DrawerContent() {
         axios.get(`${config.uri}/user/:`+userToken).then(res=>{
             setUserDetails(res.data.user);
             setDetails(res.data.details);
-            console.log(details);
         })
-    }, [setUserDetails,setDetails]);
+    });
 
     return (
         <DrawerContentScrollView>
-            <View style={styles.drawerContent}>
-                <View style={styles.userInfo}>
-                    <Avatar.Image 
-                        source={{
-                            uri : 'https://pbs.twimg.com/profile_images/952545910990495744/b59hSXUd_400x400.jpg',
-                        }}
-                        size={60}
-                    />
-                    <Title style={styles.title}>{}</Title>
-                    <Caption style={styles.caption}>{}</Caption>
-                    <View style={styles.row}>
-                        <View style={styles.section}>
-                            <Paragraph style={[styles.paragraph, styles.caption]}>
-                                200
-                            </Paragraph>
-                            <Caption style={styles.caption}>Following</Caption>
-                        </View>
-                        <View style={styles.section}>
-                            <Paragraph style={[styles.paragraph, styles.caption]}>
-                                1500
-                            </Paragraph>
-                            <Caption style={styles.caption}>Followers</Caption>
+            {userDetails ? 
+                <View style={styles.drawerContent}>
+                    <View style={styles.userInfo}>
+                        <Avatar.Image 
+                            source={{
+                                uri : 'https://pbs.twimg.com/profile_images/952545910990495744/b59hSXUd_400x400.jpg',
+                            }}
+                            size={60}
+                        />
+                        <Title style={styles.title}>{details.name ? details.name : ""}</Title>
+                        <Caption style={styles.caption}>{details.jobTitle ? details.jobTitle : '@'+userDetails.email}</Caption>
+                        <View style={styles.row}>
+                            <View style={styles.section}>
+                                <Paragraph style={[styles.paragraph, styles.caption]}>
+                                    {details.following ? (details.following).length : ""}
+                                </Paragraph>
+                                <Caption style={styles.caption}>Following</Caption>
+                            </View>
+                            <View style={styles.section}>
+                                <Paragraph style={[styles.paragraph, styles.caption]}>
+                                    {details.followers ? (details.followers).length : ""}
+                                </Paragraph>
+                                <Caption style={styles.caption}>Followers</Caption>
+                            </View>
                         </View>
                     </View>
+                    <Drawer.Section style={styles.drawerSection}>
+                        <DrawerItem 
+                            icon={({color,size})=><MatIcons name={'account-outline'} color={color} size={size}/>}
+                            label="Profile"
+                            onPress={()=>navigate.navigate("userProfile")}
+                        />
+                        <DrawerItem 
+                            icon={({color,size})=><MatIcons name={'post'} color={color} size={size}/>}
+                            label="Posts"
+                            onPress={()=>navigate.navigate("userPosts")}
+                        />
+                    </Drawer.Section>
+                    <Drawer.Section style={styles.drawerSection}>
+                        <Drawer.Item
+                            icon={({color,size})=><IonIcons name={'settings-outline'} color={color} size={size}/>}
+                            label='Settings'
+                            onPress={()=>navigate.navigate("userSettings")}
+                        />
+                    </Drawer.Section>
                 </View>
-                <Drawer.Section style={styles.drawerSection}>
-                    <DrawerItem 
-                        icon={({color,size})=><MatIcons name={'account-outline'} color={color} size={size}/>}
-                        label="Profile"
-                        onPress={()=>navigate.navigate("userProfile")}
-                    />
-                    <DrawerItem 
-                        icon={({color,size})=><MatIcons name={'post'} color={color} size={size}/>}
-                        label="Posts"
-                        onPress={()=>navigate.navigate("userPosts")}
-                    />
-                </Drawer.Section>
-                <Drawer.Section style={styles.drawerSection}>
-                    <Drawer.Item
-                        icon={({color,size})=><IonIcons name={'settings-outline'} color={color} size={size}/>}
-                        label='Settings'
-                        onPress={()=>navigate.navigate("userSettings")}
-                    />
-                </Drawer.Section>
-            </View>
+            : 
+            "" }
         </DrawerContentScrollView>
     );
 }
@@ -124,6 +139,16 @@ function BottomTab (){
                     tabBarStyle : {elevation : 0, shadowOpacity : 0, borderWidth : 1, borderTopColor : '#C5CEE0', height : 60}
                 }}
             />
+            <Tab.Screen 
+                name='followers' 
+                component={Followings} 
+                options={{
+                    headerShown : false,
+                    tabBarIcon : ({focused,color})=><SimpleLineIcon name={'user-following'} color={focused ? '#0057C2' : color} size={20} style={{marginTop : focused ? 3 : 8}}/>,
+                    tabBarLabel : ({focused, color})=><Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Followers' : ""}</Text>,
+                    tabBarStyle : {elevation : 0, shadowOpacity : 0, borderWidth : 1, borderTopColor : '#C5CEE0', height : 60}
+                }}
+            />
         </Tab.Navigator>
     );
 }
@@ -133,7 +158,7 @@ function DrawerOpen(){
 
     return (
         <Drawer.Navigator drawerContent={()=><DrawerContent/>}>
-            <Drawer.Screen name='userHome' component={BottomTab}/>
+            <Drawer.Screen name='userHome' component={BottomTab} options={{header : ()=><AppBarHeader/>}}/>
         </Drawer.Navigator>
     );
 }
