@@ -12,7 +12,7 @@ import MatIcons2 from 'react-native-vector-icons/MaterialIcons'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import FaFa5 from 'react-native-vector-icons/FontAwesome5'
 import axios from 'axios'
-import config from '../apiConfig'
+import config, { uri } from '../apiConfig'
 
 // common
 import Home from './Home'
@@ -37,7 +37,7 @@ function AppBarHeader (){
     return (
         <Appbar.Header style={{width : '100%', justifyContent : 'space-between', paddingHorizontal : 20}}>
             <View>
-                <TouchableOpacity onPress={()=>navigate.openDrawer()} style={{marginStart : 10, borderWidth : 1, borderColor : '#2E3A59', borderRadius: 50}}>
+                <TouchableOpacity onPress={()=>navigate.openDrawer()} style={{marginStart : 10,}}>
                     <Avatar.Image size={40} source={require('../assets/images/defaultUser.png')}/>
                 </TouchableOpacity>
             </View>
@@ -81,12 +81,19 @@ function DrawerContent() {
             {userDetails ? 
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfo}>
-                        <Avatar.Image 
-                            source={{
-                                uri : 'https://pbs.twimg.com/profile_images/952545910990495744/b59hSXUd_400x400.jpg',
-                            }}
-                            size={60}
-                        />
+                        {
+                            details.image ? 
+                            <Avatar.Image 
+                                source={{
+                                    uri : 'images.png',
+                                }}
+                                size={60}
+                            /> : 
+                            <Avatar.Image 
+                                source={require('../assets/images/defaultUser.png')}
+                                size={60}
+                            />
+                        }
                         <Title style={styles.title}>{details.name ? details.name : ""}</Title>
                         <Caption style={styles.caption}>{details.jobTitle ? details.jobTitle : '@'+userDetails.email}</Caption>
                         <View style={styles.row}>
