@@ -1,4 +1,5 @@
 
+import { useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
 import { Avatar, Title, Caption, Paragraph, Drawer, Text } from 'react-native-paper';
 import { NavigationContainer, useNavigation } from '@react-navigation/native'
@@ -8,6 +9,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import * as SecureStorage from 'expo-secure-store'
 import MatIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import IonIcons from 'react-native-vector-icons/Ionicons'
+import axios from 'axios'
+import config from '../apiConfig'
 
 // common
 import Home from './Home'
@@ -25,6 +28,27 @@ import Profile from './user/accountControl/profile'
 
 function DrawerContent() {
     const navigate = useNavigation();
+    const [userDetails,setUserDetails] = useState([]);
+    const [details, setDetails] = useState([]);
+    const [userToken, setUserToken] = useState("");
+    
+    const getToken = async ()=>{
+        try {
+            const result = await SecureStorage.getItemAsync('auth');
+            setUserToken(result);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    getToken();
+    useEffect(()=>{
+        axios.get(`${config.uri}/user/:`+userToken).then(res=>{
+            setUserDetails(res.data.user);
+            setDetails(res.data.details);
+            console.log(details);
+        })
+    }, [setUserDetails,setDetails]);
+
     return (
         <DrawerContentScrollView>
             <View style={styles.drawerContent}>
@@ -35,8 +59,8 @@ function DrawerContent() {
                         }}
                         size={60}
                     />
-                    <Title style={styles.title}>David Musthapa</Title>
-                    <Caption style={styles.caption}>@david</Caption>
+                    <Title style={styles.title}>{}</Title>
+                    <Caption style={styles.caption}>{}</Caption>
                     <View style={styles.row}>
                         <View style={styles.section}>
                             <Paragraph style={[styles.paragraph, styles.caption]}>
