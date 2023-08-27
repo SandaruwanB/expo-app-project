@@ -1,6 +1,8 @@
+
 import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
 import * as SecureStorage from 'expo-secure-store'
@@ -15,108 +17,25 @@ import Register from './Register'
 import EmailVerification from './EmailVerification'
 
 // common user
-import UserHome from './user/UserHome'
-import Notification from './user/Notifications'
-import Post from './user/Post'
-import Followers from './user/Followers'
-import Messaging from './user/Messaging'
-import Settings from './user/Settings'
-import ChangeCategory from './user/settings/ChangeCategory'
-import ChangeUserData from './user/settings/ChangeUserData'
+import Index from './user/index'
 
-// admin user
-
-
-
-const UserHeader = ()=>{
-    const navigate = useNavigation();
-
+function DrawerContent() {
     return (
-        <View style={styles.container}>
-            <View style={styles.content}>
-                <View style={{position : 'relative', width : '20%'}}>
-                    <TouchableOpacity onPress={()=>navigate.navigate('Account Settings')}>
-                        <Image source={require("../assets/images/defaultUser.png")} style={styles.userIcon} />
-                    </TouchableOpacity>
-                </View>
-                <View style={{position : 'relative', width: '65%'}}>
-                    <TextInput style={styles.searchBar} placeholder='Search'/>
-                    <Icon name='search' size={24} style={styles.searchIcon}/>
-                </View>
-                <View style={{position : 'relative', width : '15%'}}>
-                    <MatIcons name='message-processing' size={28} style={styles.messageIcon} onPress={()=>navigate.navigate("Messaging")}/>
-                </View>
-            </View>
-        </View>
-    )
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Drawer content</Text>
+      </View>
+    );
 }
 
-
-const UserBottomNav = ()=>{
-    const Tab = createBottomTabNavigator();
+function DrawerOpen(){
+    const Drawer = createDrawerNavigator();
 
     return (
-        <Tab.Navigator>
-            <Tab.Screen 
-                name='Home' 
-                component={UserHome} 
-                options={{
-                    tabBarIcon : ({focused, color})=>(
-                        <MatIcons name='home' color={focused ? '#0057C2' : color} size={30} style={{marginTop : focused ? 3 : 8}} />
-                    ),
-                    tabBarLabel : ({focused, color})=>(
-                        <Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Home' : ''}</Text>
-                    ),
-                    tabBarStyle : {elevation : 0, shadowOpacity : 0, borderTopWidth : 1, borderTopColor : '#C5CEE0', height : 60},
-                    header : ()=><UserHeader />,
-                }}
-            />
-            <Tab.Screen 
-                name='Followers' 
-                component={Followers}
-                options={{
-                    tabBarIcon : ({focused, color})=>(
-                        <FaIcon name='users' color={focused ? '#0057C2' : color} size={22} style={{marginTop : focused ? 3 : 8}} />
-                    ),
-                    tabBarLabel : ({focused, color})=>(
-                        <Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Followers' : ''}</Text>
-                    ),
-                    tabBarStyle : {elevation : 0, shadowOpacity : 0, borderTopWidth : 1, borderTopColor : '#C5CEE0', height : 60},
-                    header : ()=><UserHeader />,
-                }}
-            />
-            <Tab.Screen 
-                name='Post' 
-                component={Post} 
-                options={{
-                    tabBarIcon : ({focused, color})=>(
-                        <Icon name='post-add' color={focused ? '#0057C2' : color} size={26} style={{marginTop : focused ? 3 : 8}}/>
-                    ),
-                    tabBarLabel : ({focused, color})=>(
-                        <Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Post' : ''}</Text>
-                    ),
-                    tabBarStyle : {elevation : 0, shadowOpacity : 0, borderTopWidth : 1, borderTopColor : '#C5CEE0', height : 60, display : 'none',},
-                    headerShown : false,
-                }}
-            />
-            <Tab.Screen 
-                name='Notifications' 
-                component={Notification}
-                options={{
-                    tabBarIcon : ({focused, color})=>(
-                        <Icon name='notifications' color={focused ? '#0057C2' : color} size={26} style={{marginTop : focused ? 3 : 8}}/>
-                    ),
-                    tabBarLabel : ({focused, color})=>(
-                        <Text style={{color : focused ? '#0057C2' : color, fontSize : 12, paddingBottom : 5}}>{focused ? 'Notifications' : ''}</Text>
-                    ),
-                    tabBarStyle : {elevation : 0, shadowOpacity : 0, borderTopWidth : 1, borderTopColor : '#C5CEE0', height : 60},
-                    header : ()=><UserHeader />,
-                }}
-            />
-        </Tab.Navigator>
-    )
+        <Drawer.Navigator drawerContent={()=><DrawerContent/>}>
+            <Drawer.Screen name='userHome' component={Index}/>
+        </Drawer.Navigator>
+    );
 }
-
 
 const AppNavigation = () => {
     const Stack = createNativeStackNavigator();
@@ -127,11 +46,7 @@ const AppNavigation = () => {
                 <Stack.Screen name='Login' component={Login} options={{headerShown : false}} />
                 <Stack.Screen name='Register' component={Register} options={{headerShown : false}} />
                 <Stack.Screen name='EmailVerify' component={EmailVerification} options={{headerShown : false}} />
-                <Stack.Screen name='UsersPannel' component={UserBottomNav} options={{headerShown : false}} />
-                <Stack.Screen name='Messaging' component={Messaging} />
-                <Stack.Screen name='Account Settings' component={Settings} options={{headerTitle : ""}}/>
-                <Stack.Screen name='Change Category' component={ChangeCategory} options={{headerTitle : "Sharing Category"}}/>
-                <Stack.Screen name='Change Personal Details' component={ChangeUserData} options={{headerTitle : "Account Settings"}} />
+                <Stack.Screen name='userPannel' component={DrawerOpen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

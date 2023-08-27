@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 
-const AllPosts = () => {
+const Index = () => {
     return (
         <View>
             
@@ -11,4 +11,4 @@ const AllPosts = () => {
 
 const styles = StyleSheet.create({})
 
-export default AllPosts;
+export default Index;

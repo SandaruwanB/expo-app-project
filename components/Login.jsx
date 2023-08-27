@@ -57,7 +57,7 @@ const Login = () => {
                     else if(res.data.result === "user"){
                         setPassword("");
                         setToken("user");
-                        navigate.navigate("UsersPannel");
+                        navigate.navigate("userPannel");
                     }
                     else if(res.data.result === "password"){
                         setPassErr(true);
