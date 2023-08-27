@@ -1,11 +1,10 @@
 
 import { View, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
-import { Avatar, Title, Caption, Paragraph, Drawer, Text, TouchableRipple, Switch } from 'react-native-paper';
-import { NavigationContainer } from '@react-navigation/native'
+import { Avatar, Title, Caption, Paragraph, Drawer, Text } from 'react-native-paper';
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createDrawerNavigator, DrawerItem, DrawerContentScrollView } from '@react-navigation/drawer'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { useNavigation } from '@react-navigation/native'
 import * as SecureStorage from 'expo-secure-store'
 import MatIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import IonIcons from 'react-native-vector-icons/Ionicons'
@@ -18,9 +17,14 @@ import EmailVerification from './EmailVerification'
 
 // common user
 import Index from './user/index'
-import Search from './user/search';
+import Search from './user/search'
+import Settings from './user/accountControl/settings'
+import Post from './user/accountControl/posts'
+import Profile from './user/accountControl/profile'
+
 
 function DrawerContent() {
+    const navigate = useNavigation();
     return (
         <DrawerContentScrollView>
             <View style={styles.drawerContent}>
@@ -52,19 +56,19 @@ function DrawerContent() {
                     <DrawerItem 
                         icon={({color,size})=><MatIcons name={'account-outline'} color={color} size={size}/>}
                         label="Profile"
-                        onPress={()=>console.log("profile")}
+                        onPress={()=>navigate.navigate("userProfile")}
                     />
                     <DrawerItem 
                         icon={({color,size})=><MatIcons name={'post'} color={color} size={size}/>}
                         label="Posts"
-                        onPress={()=>console.log("Posts")}
+                        onPress={()=>navigate.navigate("userPosts")}
                     />
                 </Drawer.Section>
                 <Drawer.Section style={styles.drawerSection}>
                     <Drawer.Item
                         icon={({color,size})=><IonIcons name={'settings-outline'} color={color} size={size}/>}
                         label='Settings'
-                        onPress={()=>console.log("settings")}
+                        onPress={()=>navigate.navigate("userSettings")}
                     />
                 </Drawer.Section>
             </View>
@@ -120,6 +124,9 @@ const AppNavigation = () => {
                 <Stack.Screen name='Register' component={Register} options={{headerShown : false}} />
                 <Stack.Screen name='EmailVerify' component={EmailVerification} options={{headerShown : false}} />
                 <Stack.Screen name='userPannel' component={DrawerOpen} options={{headerShown : false}} />
+                <Stack.Screen name='userSettings' component={Settings} />
+                <Stack.Screen name='userProfile' component={Profile} />
+                <Stack.Screen name='userPosts' component={Post} />
             </Stack.Navigator>
         </NavigationContainer>
     );
