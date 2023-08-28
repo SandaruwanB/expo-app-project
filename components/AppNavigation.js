@@ -29,7 +29,6 @@ import SetPost from './user/setPost'
 import Notifications from './user/notifications'
 import Settings from './user/accountControl/settings'
 import Post from './user/accountControl/posts'
-import Profile from './user/accountControl/profile'
 import UserProfle from './user/userAccountDetails/userProfle'
 import UserPost from './user/userAccountDetails/userPost';
 
@@ -125,12 +124,12 @@ function DrawerContent() {
                         <DrawerItem 
                             icon={({color,size})=><MatIcons name={'account-outline'} color={color} size={size}/>}
                             label="Profile"
-                            onPress={()=>navigate.navigate("profile")}
+                            onPress={()=>navigate.navigate("userProfile",{userid : userToken})}
                         />
                         <DrawerItem 
                             icon={({color,size})=><MatIcons name={'post'} color={color} size={size}/>}
                             label="Posts"
-                            onPress={()=>navigate.navigate("posts")}
+                            onPress={()=>navigate.navigate("posts",{user : userToken})}
                         />
                     </Drawer.Section>
                     <Drawer.Section style={styles.drawerSection}>
@@ -226,8 +225,7 @@ const AppNavigation = () => {
                 <Stack.Screen name='EmailVerify' component={EmailVerification} options={{headerShown : false}} />
                 <Stack.Screen name='userPannel' component={DrawerOpen} options={{headerShown : false}} />
                 <Stack.Screen name='userSettings' component={Settings} />
-                <Stack.Screen name='profile' component={Profile} />
-                <Stack.Screen name='posts' component={Post} />
+                <Stack.Screen name='posts' component={Post} options={{headerTitle : "My Posts", headerTitleAlign : 'center'}}/>
                 <Stack.Screen name='messaging' component={Messaging} options={{headerTitle : "Messaging", headerTitleAlign : "center"}}/>
                 <Stack.Screen name='userProfile' component={UserProfle} options={{headerTitle : ""}}/>
                 <Stack.Screen name='userPost' component={UserPost} options={{headerTitle : ""}}/>

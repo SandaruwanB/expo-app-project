@@ -52,7 +52,7 @@ const SetPost = () => {
             setImage(result.assets[0].base64);
         }
         else{
-            console.log(token);
+            console.log("cancelled");
         }
     }
 
