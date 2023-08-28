@@ -161,7 +161,7 @@ const SetPost = () => {
                             categories.map((value)=>{
                                 return (
                                     <View key={value._id}>
-                                        <TouchableOpacity style={{width : '100%', marginBottom : 20}} onPress={()=>{setCategory(value.name); setBottomSheetOpen(false)}}>
+                                        <TouchableOpacity style={{width : '100%', marginBottom : 10}} onPress={()=>{setCategory(value.name); setBottomSheetOpen(false)}}>
                                             <View style={{display: 'flex', flexDirection : 'row'}}>
                                                 <FaFa name={'plus'} size={15} style={{paddingEnd : 20, paddingTop: 4,}}/>
                                                 <Text style={{fontSize : 16}}>{value.name}</Text>

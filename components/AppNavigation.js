@@ -71,11 +71,19 @@ function DrawerContent() {
         }
     }
     getToken();
+    const getData = async ()=>{
+        try{
+            if(userDetails.length === 0){
+                axios.get(`${config.uri}/user/:`+userToken).then(res=>{
+                    setUserDetails(res.data.user);
+                    setDetails(res.data.details);
+                })
+            }
+        }
+        catch(err){}
+    }
     useEffect(()=>{
-        axios.get(`${config.uri}/user/:`+userToken).then(res=>{
-            setUserDetails(res.data.user);
-            setDetails(res.data.details);
-        })
+        getData();
     });
 
     return (

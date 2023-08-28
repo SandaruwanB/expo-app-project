@@ -37,10 +37,11 @@ const Index = () => {
         axios.get(`${config.uri}/posts`).then(res=>{
             setPosts(res.data.posts);
             setUsers(res.data.users);
+        });
+        axios.get(`${config.uri}/getcategory`).then(res=>{
             setCagories(res.data.category);
-            console.log(res.data);
-        },[setUsers,setPosts,setCagories]);
-    });
+        });
+    },[]);
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
@@ -48,7 +49,6 @@ const Index = () => {
             axios.get(`${config.uri}/posts`).then(res=>{
                 setPosts(res.data.posts);
                 setUsers(res.data.users);
-                setCagories(res.data.category);
                 setPostBody("");
             });
             setRefreshing(false);
@@ -224,7 +224,29 @@ const Index = () => {
                     })
                 }
                 </View>
-            : "" }
+            :
+                <Card style={{backgroundColor: '#F2F8FF', borderRadius: 0, marginTop: 10,}}>
+                    <Card.Content>
+                        <Card.Title
+                            title="Quick Post"                            
+                        />
+                        <TouchableWithoutFeedback onPress={()=>setBottomSheetOpen(true)}>
+                            <View style={styles.textInput}>
+                                <Text>{category == "" ? "Choose Category" : category}</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                        <View>
+                            <TextInput style={[styles.textInput,{marginTop: 10,textAlignVertical : 'top'}]} placeholder='Post Content' multiline={true} numberOfLines={4} onChangeText={(text)=>setPostBody(text)}/>
+                        </View>
+                        <View style={{marginTop: 10,}}>
+                            <TouchableOpacity style={[styles.postBtn, {marginLeft : '70%'}]} onPress={()=>quickPost()}>
+                                <Text style={{textAlign: 'center', color : '#fff',}}>Post</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Card.Content>
+                </Card>
+            
+            }
                 </ScrollView>
             <BottomSheet
                 visible={bottomSheetOpen}
@@ -239,7 +261,7 @@ const Index = () => {
                             categoris.length > 0 ? categoris.map((value)=>{
                                 return (
                                     <View key={value._id}>
-                                        <TouchableOpacity style={{width : '100%', marginBottom : 20}} onPress={()=>{setCategory(value.name); setBottomSheetOpen(false)}}>
+                                        <TouchableOpacity style={{width : '100%', marginBottom : 10}} onPress={()=>{setCategory(value.name); setBottomSheetOpen(false)}}>
                                             <View style={{display: 'flex', flexDirection : 'row'}}>
                                                 <FaFa name={'plus'} size={15} style={{paddingEnd : 20, paddingTop: 4,}}/>
                                                 <Text style={{fontSize : 16}}>{value.name}</Text>
