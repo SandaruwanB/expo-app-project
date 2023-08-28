@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, StyleSheet, ScrollView, TextInput, TouchableWithoutFeedback, TouchableOpacity, Image, RefreshControl} from 'react-native';
+import {View, StyleSheet, ScrollView, TextInput, TouchableWithoutFeedback, TouchableOpacity, Image, RefreshControl, Alert} from 'react-native';
 import {Text, Card, Divider} from 'react-native-paper'
 import {BottomSheet} from 'react-native-btr'
 import FaFa from 'react-native-vector-icons/FontAwesome5'
@@ -8,8 +8,10 @@ import IonIcons from 'react-native-vector-icons/Ionicons'
 import * as SecureStorage from 'expo-secure-store'
 import axios from 'axios'
 import config from '../../apiConfig'
+import { useNavigation } from '@react-navigation/native';
 
 const Index = () => {
+    const navigate = useNavigation();
     const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
     const [refreshing,setRefreshing] = useState(false);
     const [opendBottomSheetPost, setOpendBottomSheetPost] = useState("");
@@ -35,6 +37,7 @@ const Index = () => {
         axios.get(`${config.uri}/posts`).then(res=>{
             setPosts(res.data.posts);
             setUsers(res.data.users);
+            setCagories(res.data.category);
         },[setUsers,setPosts,setCagories]);
     });
 
@@ -44,12 +47,33 @@ const Index = () => {
             axios.get(`${config.uri}/posts`).then(res=>{
                 setPosts(res.data.posts);
                 setUsers(res.data.users);
+                setCagories(res.data.category);
                 setPostBody("");
             });
             setRefreshing(false);
         }, 2000);
-    }, [setRefreshing, setPosts, setUsers, setPostBody]);
+    }, [setRefreshing, setPosts, setUsers, setPostBody, setCagories]);
 
+    const quickPost = async ()=>{
+        if(category === "" && postBody === ""){
+            Alert.alert("All Fields are Required", "Please choose category and enter the post message.", [{text : "got it"}]);
+        }
+        else if(category === "Select the Category"){
+            Alert.alert("All Fields are Required", "Please choose category before submit.", [{text : "got it"}]);
+        }
+        else if(postBody === ""){
+            Alert.alert("All Fields are Required", "Post body cannot empty. please fill post body before submit.", [{text : "got it"}]);
+        }
+        else{
+            await axios.post(`${config.uri}/quickPost`, {
+                user : token,
+                category : category,
+                postContent : postBody,
+            }).then(res=>{
+                console.log(res.data);
+            })
+        }
+    }
 
     const setUserNamesEtc = (userid, date)=>{
         const index = users.findIndex((item, i)=>{
@@ -60,7 +84,7 @@ const Index = () => {
             <View style={{flexDirection: 'row'}}>
                 <Image source={require('../../assets/images/defaultUser.png')} style={{width : 50, height : 50, borderRadius : 50, paddingTop: 50 }}/>
                 <View style={{marginLeft : 15, marginTop : 2}}>
-                    <TouchableOpacity key={userid}>
+                    <TouchableOpacity key={userid} onPress={()=>navigate.navigate('userProfile',{userid : userid})}>
                         <Text style={{fontWeight : 'bold', fontSize : 15}}>{users.length > 0 ? users[index].name : ""}</Text>
                     </TouchableOpacity>
                     <Text style={{fontSize : 12}}>{users.length > 0 ? users[index].jobTitle ? users[index].jobTitle : '@'+userid : ""}</Text>
@@ -86,10 +110,10 @@ const Index = () => {
                             </View>
                         </TouchableWithoutFeedback>
                         <View>
-                            <TextInput style={[styles.textInput,{marginTop: 10,textAlignVertical : 'top'}]} placeholder='Post Content' multiline={true} numberOfLines={4}/>
+                            <TextInput style={[styles.textInput,{marginTop: 10,textAlignVertical : 'top'}]} placeholder='Post Content' multiline={true} numberOfLines={4} onChangeText={(text)=>setPostBody(text)}/>
                         </View>
                         <View style={{marginTop: 10,}}>
-                            <TouchableOpacity style={[styles.postBtn, {marginLeft : '70%'}]}>
+                            <TouchableOpacity style={[styles.postBtn, {marginLeft : '70%'}]} onPress={()=>quickPost()}>
                                 <Text style={{textAlign: 'center', color : '#fff',}}>Post</Text>
                             </TouchableOpacity>
                         </View>
@@ -105,21 +129,21 @@ const Index = () => {
                                             <View style={{flexDirection: 'row', justifyContent : 'space-between', paddingHorizontal: 15}}>
                                                 {setUserNamesEtc(post.userid, post.postDate)}
                                                 <View>
-                                                    <TouchableOpacity key={post.post[0]._id} onPress={(e)=>setOpendBottomSheetPost(post.post[0]._id)}>
+                                                    <TouchableOpacity key={post.post[0]._id} onPress={(e)=>{setOpendBottomSheetPost(post.post[0]._id); navigate.navigate('userPost',{postid : post.post[0]._id}); console.log(post.post[0]._id)}}>
                                                         <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
                                                     </TouchableOpacity>
                                                 </View>
                                             </View>
                                         </View>
-                                        <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>dsajas asdhgash asdjhgasjd asdhashd</Text>
+                                        <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>{post.post[0].title}</Text>
                                         <Image  source={{uri : `data:image/png;base64,${post.post[0].image}`}} style={{height : 300, width : '100%'}}/>
                                         <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
                                             <View style={{flexDirection : 'row'}}>
                                                 <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
-                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>10 persons starred</Text>
+                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].starred).length} persons starred</Text>
                                             </View> 
                                             <View>
-                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>1 comments</Text>
+                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].comments).length} comments</Text>
                                             </View>
                                         </View>
                                         <Divider/>
@@ -151,23 +175,24 @@ const Index = () => {
                                             <View style={{flexDirection: 'row', justifyContent : 'space-between', paddingHorizontal: 15}}>
                                                 {setUserNamesEtc(post.userid, post.postDate)}
                                                 <View>
-                                                    <TouchableOpacity key={post.post[0]._id} onPress={(e)=>setOpendBottomSheetPost(post.post[0]._id)}>
+                                                    <TouchableOpacity key={post.post[0]._id} onPress={(e)=>{setOpendBottomSheetPost(post.post[0]._id); navigate.navigate('userPost',{postid : post.post[0]._id})}}>
                                                         <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
                                                     </TouchableOpacity>
                                                 </View>
                                             </View>
                                         </View>
-                                        <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>asdsadsa sadasd</Text>
-                                        <View style={[{padding : 20, backgroundColor : '#94CBFF',}]}>
-                                            <Text style={{fontSize : 18, textAlign : 'justify',}}>asdasghd sadashd sahdgh asdgsajd sagdj</Text>
+                                        {post.title ? <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>{post.post[0].title}</Text> : ""}
+                                        
+                                        <View style={[{padding : 20, backgroundColor : '#94CBFF'},post.post[0].title ? "" : {marginTop : 10}]}>
+                                            <Text style={{fontSize : 18, textAlign : 'justify',}}>{post.post[0].text}</Text>
                                         </View>
                                         <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
                                             <View style={{flexDirection : 'row'}}>
                                                 <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
-                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>10 persons starred</Text>
+                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].starred).length} persons starred</Text>
                                             </View> 
                                             <View>
-                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>1 comments</Text>
+                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].comments).length} comments</Text>
                                             </View>
                                         </View>
                                         <Divider/>
@@ -209,19 +234,21 @@ const Index = () => {
                     <View style={styles.sheetTopBar}></View>
                     <View style={{marginTop : 20}}></View>
                     <ScrollView>
-                        <TouchableOpacity style={{width : '100%', marginBottom : 20}}>
-                            <View style={{display: 'flex', flexDirection : 'row'}}>
-                                <FaFa name={'plus'} size={15} style={{paddingEnd : 20, paddingTop: 4,}}/>
-                                <Text style={{fontSize : 16}}>Technology</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <Divider/>
-                        <TouchableOpacity style={{width : '100%'}}>
-                            <View style={{display: 'flex', flexDirection : 'row'}}>
-                                <FaFa name={'plus'} size={15} style={{paddingEnd : 20, paddingTop: 4,}}/>
-                                <Text style={{fontSize : 16}}>Technology</Text>
-                            </View>
-                        </TouchableOpacity>
+                        {
+                            categoris.length > 0 ? categoris.map((value)=>{
+                                return (
+                                    <View key={value._id}>
+                                        <TouchableOpacity style={{width : '100%', marginBottom : 20}} onPress={()=>{setCategory(value.name); setBottomSheetOpen(false)}}>
+                                            <View style={{display: 'flex', flexDirection : 'row'}}>
+                                                <FaFa name={'plus'} size={15} style={{paddingEnd : 20, paddingTop: 4,}}/>
+                                                <Text style={{fontSize : 16}}>{value.name}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <Divider />
+                                    </View>
+                                );
+                            }) : ""
+                        }
                     </ScrollView>
                 </View>
             </BottomSheet>

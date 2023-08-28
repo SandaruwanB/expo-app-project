@@ -1,10 +1,11 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 
-const Search = () => {
+const Search = ({route}) => {
+    const {text} = route.params;
     return (
         <View>
-            <Text>Search</Text>
+            <Text>{text}</Text>
         </View>
     );
 }

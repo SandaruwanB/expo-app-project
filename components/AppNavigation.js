@@ -30,6 +30,8 @@ import Notifications from './user/notifications'
 import Settings from './user/accountControl/settings'
 import Post from './user/accountControl/posts'
 import Profile from './user/accountControl/profile'
+import UserProfle from './user/userAccountDetails/userProfle'
+import UserPost from './user/userAccountDetails/userPost';
 
 
 function AppBarHeader (){
@@ -42,7 +44,7 @@ function AppBarHeader (){
                 </TouchableOpacity>
             </View>
             <View style={{position : 'relative'}}>
-                <TextInput style={{backgroundColor : '#E4E9F2', width : 220, padding : 4, borderRadius: 6, paddingLeft:30}} placeholder='Search...' onChangeText={(text)=>{navigate.navigate('search')}}/>
+                <TextInput style={{backgroundColor : '#E4E9F2', width : 220, padding : 4, borderRadius: 6, paddingLeft:30}} placeholder='Search...' onChangeText={(text)=>{navigate.navigate('search',{text : text})}}/>
                 <IonIcons name={'search'} size={20} style={{position: 'absolute', top : 6, left: 4}}/>
             </View>
             <View>
@@ -115,12 +117,12 @@ function DrawerContent() {
                         <DrawerItem 
                             icon={({color,size})=><MatIcons name={'account-outline'} color={color} size={size}/>}
                             label="Profile"
-                            onPress={()=>navigate.navigate("userProfile")}
+                            onPress={()=>navigate.navigate("profile")}
                         />
                         <DrawerItem 
                             icon={({color,size})=><MatIcons name={'post'} color={color} size={size}/>}
                             label="Posts"
-                            onPress={()=>navigate.navigate("userPosts")}
+                            onPress={()=>navigate.navigate("posts")}
                         />
                     </Drawer.Section>
                     <Drawer.Section style={styles.drawerSection}>
@@ -216,9 +218,11 @@ const AppNavigation = () => {
                 <Stack.Screen name='EmailVerify' component={EmailVerification} options={{headerShown : false}} />
                 <Stack.Screen name='userPannel' component={DrawerOpen} options={{headerShown : false}} />
                 <Stack.Screen name='userSettings' component={Settings} />
-                <Stack.Screen name='userProfile' component={Profile} />
-                <Stack.Screen name='userPosts' component={Post} />
-                <Stack.Screen name='messaging' component={Messaging} />
+                <Stack.Screen name='profile' component={Profile} />
+                <Stack.Screen name='posts' component={Post} />
+                <Stack.Screen name='messaging' component={Messaging} options={{headerTitle : "Messaging", headerTitleAlign : "center"}}/>
+                <Stack.Screen name='userProfile' component={UserProfle} options={{headerTitle : ""}}/>
+                <Stack.Screen name='userPost' component={UserPost} options={{headerTitle : ""}}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
