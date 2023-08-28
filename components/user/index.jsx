@@ -38,6 +38,7 @@ const Index = () => {
             setPosts(res.data.posts);
             setUsers(res.data.users);
             setCagories(res.data.category);
+            console.log(res.data);
         },[setUsers,setPosts,setCagories]);
     });
 
@@ -95,7 +96,7 @@ const Index = () => {
     }
 
     return (
-        <View style={{backgroundColor : '#8F9BB3'}}>
+        <View style={[posts.length > 0 ? {backgroundColor : '#8F9BB3'} : {}]}>
             <ScrollView style={{height : '100%', marginBottom : 200,}} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             {(posts.length) > 0 ? 
             <View>
@@ -181,7 +182,7 @@ const Index = () => {
                                                 </View>
                                             </View>
                                         </View>
-                                        {post.title ? <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>{post.post[0].title}</Text> : ""}
+                                        {post.post[0].title ? <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>{post.post[0].title}</Text> : ""}
                                         
                                         <View style={[{padding : 20, backgroundColor : '#94CBFF'},post.post[0].title ? "" : {marginTop : 10}]}>
                                             <Text style={{fontSize : 18, textAlign : 'justify',}}>{post.post[0].text}</Text>
