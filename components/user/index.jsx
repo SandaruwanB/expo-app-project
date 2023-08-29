@@ -33,15 +33,24 @@ const Index = () => {
     }
     getToken();
 
+    const getAllPosts = async ()=>{
+        try{
+            
+        }
+        catch(err){}
+    }
+
     useEffect(()=>{
         axios.get(`${config.uri}/posts`).then(res=>{
             setPosts(res.data.posts);
             setUsers(res.data.users);
+            console.log(res.data);
         });
         axios.get(`${config.uri}/getcategory`).then(res=>{
             setCagories(res.data.category);
         });
-    },[]);
+        
+    },[setPosts,setUsers,setCagories]);
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
@@ -83,7 +92,13 @@ const Index = () => {
         const day = date.substring(0, date.indexOf('T'));
         return (
             <View style={{flexDirection: 'row'}}>
-                <Image source={require('../../assets/images/defaultUser.png')} style={{width : 50, height : 50, borderRadius : 50, paddingTop: 50 }}/>
+                {
+                    users.length > 0 ? 
+                        <Image source={users[index].image ? {uri : `data:image/jpeg;base64,${users[index].image}`} : require('../../assets/images/defaultUser.png')} style={{width : 50, height : 50, borderRadius : 50, paddingTop: 50 }}/>
+                    : ""
+
+                }
+                
                 <View style={{marginLeft : 15, marginTop : 2}}>
                     <TouchableOpacity key={userid} onPress={()=>navigate.navigate('userProfile',{userid : userid})}>
                         <Text style={{fontWeight : 'bold', fontSize : 15}}>{users.length > 0 ? users[index].name : ""}</Text>

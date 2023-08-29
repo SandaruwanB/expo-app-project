@@ -20,7 +20,7 @@ const Notifications = () => {
     getToken();
 
     useEffect(()=>{
-        axios.get(`${config.uri}/getnotifications/`+token).then(res=>{
+        axios.get(`${config.uri}/getnotifications/:`+token).then(res=>{
             setNotifications(res.data.notifications);
         })
     })

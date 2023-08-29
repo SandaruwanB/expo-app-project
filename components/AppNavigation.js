@@ -30,8 +30,11 @@ import Notifications from './user/notifications'
 import Settings from './user/accountControl/settings'
 import Post from './user/accountControl/posts'
 import UserProfle from './user/userAccountDetails/userProfle'
-import UserPost from './user/userAccountDetails/userPost';
+import UserPost from './user/userAccountDetails/userPost'
+import AccountSettings from './user/accountControl/accountSettings'
+import About from './user/accountControl/about'
 
+let image = "";
 
 function AppBarHeader (){
     const navigate = useNavigation();
@@ -39,7 +42,11 @@ function AppBarHeader (){
         <Appbar.Header style={{width : '100%', justifyContent : 'space-between', paddingHorizontal : 20}}>
             <View>
                 <TouchableOpacity onPress={()=>navigate.openDrawer()} style={{marginStart : 10,}}>
-                    <Avatar.Image size={40} source={require('../assets/images/defaultUser.png')}/>
+                    {image === "" ? 
+                        <Avatar.Image size={40} source={require('../assets/images/defaultUser.png')}/>
+                        :
+                        <Avatar.Image size={40} source={{uri : `data:image/jpeg;base64,${image}`}}/>
+                    }   
                 </TouchableOpacity>
             </View>
             <View style={{position : 'relative'}}>
@@ -83,6 +90,7 @@ function DrawerContent() {
     }
     useEffect(()=>{
         getData();
+        image = details.image;
     });
 
     return (
@@ -94,7 +102,7 @@ function DrawerContent() {
                             details.image ? 
                             <Avatar.Image 
                                 source={{
-                                    uri : 'images.png',
+                                    uri : `data:image/jpeg;base64,${details.image}`,
                                 }}
                                 size={60}
                             /> : 
@@ -224,11 +232,13 @@ const AppNavigation = () => {
                 <Stack.Screen name='Register' component={Register} options={{headerShown : false}} />
                 <Stack.Screen name='EmailVerify' component={EmailVerification} options={{headerShown : false}} />
                 <Stack.Screen name='userPannel' component={DrawerOpen} options={{headerShown : false}} />
-                <Stack.Screen name='userSettings' component={Settings} />
+                <Stack.Screen name='userSettings' component={Settings} options={{headerTitle : 'Account Settings', headerTitleAlign : 'center'}}/>
                 <Stack.Screen name='posts' component={Post} options={{headerTitle : "My Posts", headerTitleAlign : 'center'}}/>
                 <Stack.Screen name='messaging' component={Messaging} options={{headerTitle : "Messaging", headerTitleAlign : "center"}}/>
                 <Stack.Screen name='userProfile' component={UserProfle} options={{headerTitle : ""}}/>
                 <Stack.Screen name='userPost' component={UserPost} options={{headerTitle : ""}}/>
+                <Stack.Screen name='accountSettings' component={AccountSettings} options={{headerTitle : 'Account Settings', headerTitleAlign: 'center'}} />
+                <Stack.Screen name='about' component={About} options={{headerTitle : 'About', headerTitleAlign : 'center'}}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

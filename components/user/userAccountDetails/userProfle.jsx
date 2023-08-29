@@ -29,7 +29,7 @@ const UserProfle = ({route}) => {
                         <View>
                             <View>
                                 {
-                                    userDetails.image ? "" : <Avatar.Image size={110} source={require('../../../assets/images/defaultUser.png')}/>
+                                    userDetails.image ? <Avatar.Image size={110} source={{uri : `data:image/jpeg;base64,${userDetails.image}`}}/> : <Avatar.Image size={110} source={require('../../../assets/images/defaultUser.png')}/>
                                 }
                             </View>
                         </View>
