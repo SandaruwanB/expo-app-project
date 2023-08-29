@@ -71,7 +71,7 @@ const Settings = () => {
     return (
         <View>
             <ScrollView style={{height : '100%'}}>
-                <View style={{width : '100%', paddingBottom : 30}}>
+                <View style={{width : '100%'}}>
                     <View style={{ alignItems : 'center', marginTop : 20}}>
                         {image === "" ? 
                             <Avatar.Image 

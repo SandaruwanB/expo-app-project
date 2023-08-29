@@ -110,6 +110,69 @@ const Index = () => {
         );
     }
 
+    const addStar = async (postid)=>{
+        const index = posts.findIndex((value)=>{
+            return value._id === postid;
+        });
+        posts[index].starred.push(token);
+        axios.post(`${config.uri}/addStar`, {
+            starred : posts[index].starred,
+            post : postid
+        }).then(res=>{
+            posts[index] = res.data.result;
+        });
+    }
+
+    const removeStar = async (postid)=>{
+        const index = posts.findIndex((value)=>{
+            return value._id === postid;
+        });
+        const valueIndex = posts[index].starred.findIndex((value)=>{
+            return value === token;
+        });
+        posts[index].starred.splice(valueIndex,1);
+        axios.post(`${config.uri}/addStar`, {
+            starred : posts[index].starred,
+            post : postid
+        }).then(res=>{
+            posts[index] = res.data.result;
+        });        
+    }
+
+    const setReactedOrNot = (postid)=>{
+        const index = posts.findIndex((value)=>{
+            return value._id === postid;
+        });
+
+        const reactIndex = posts[index].starred.find((value)=>{
+            if( value === token){
+                return true;
+            }
+            else{
+                return false;
+            }
+        });
+
+        return (
+                <View>
+                {
+                    !reactIndex ?
+                    <TouchableOpacity onPress={()=>addStar(postid)}>
+                        <IonIcons name='star-outline'  style={{textAlign : 'center', fontSize : 16 }}/>
+                        <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Star</Text>
+                    </TouchableOpacity>
+                    
+                    :
+                    <TouchableOpacity onPress={()=>removeStar(postid)}>
+                        <IonIcons name='star' style={{ color : '#FFC94D',fontSize : 16, textAlign : 'center'}}/>
+                        <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Starred</Text>
+                    </TouchableOpacity>
+                    
+                }
+            </View>
+        );
+    }
+
     return (
         <View style={[posts.length > 0 ? {backgroundColor : '#8F9BB3'} : {}]}>
             <ScrollView style={{height : '100%', marginBottom : 200,}} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
@@ -156,10 +219,10 @@ const Index = () => {
                                         <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
                                             <View style={{flexDirection : 'row'}}>
                                                 <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
-                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].starred).length} persons starred</Text>
+                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.starred).length} persons starred</Text>
                                             </View> 
                                             <View>
-                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].comments).length} comments</Text>
+                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.comments).length} comments</Text>
                                             </View>
                                         </View>
                                         <Divider/>
@@ -167,12 +230,7 @@ const Index = () => {
                                             <View style={{flexDirection : 'row', justifyContent : 'space-between',  paddingVertical : 10,}}>
                                                 <View></View>
                                                 <View>
-                                                    <TouchableOpacity>
-                                                        <IonIcons name='star' style={{ color : '#FFC94D', display : 'none', fontSize : 16}}/>
-                                                        <IonIcons name='star-outline'  style={{textAlign : 'center', fontSize : 16 }}/>
-                                                        <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13, display : 'none',}}></Text>
-                                                        <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Star</Text>
-                                                    </TouchableOpacity>
+                                                    {setReactedOrNot(post._id)}
                                                 </View>
                                                 <View>
                                                     <TouchableOpacity>
@@ -205,10 +263,10 @@ const Index = () => {
                                         <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
                                             <View style={{flexDirection : 'row'}}>
                                                 <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
-                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].starred).length} persons starred</Text>
+                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.starred).length} persons starred</Text>
                                             </View> 
                                             <View>
-                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].comments).length} comments</Text>
+                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.comments).length} comments</Text>
                                             </View>
                                         </View>
                                         <Divider/>
@@ -216,12 +274,7 @@ const Index = () => {
                                             <View style={{flexDirection : 'row', justifyContent : 'space-between',  paddingVertical : 10,}}>
                                                 <View></View>
                                                 <View>
-                                                    <TouchableOpacity>
-                                                        <IonIcons name='star' style={{ color : '#FFC94D', display : 'none', fontSize : 16}}/>
-                                                        <IonIcons name='star-outline'  style={{textAlign : 'center', fontSize : 16 }}/>
-                                                        <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13, display : 'none',}}></Text>
-                                                        <Text style={{textAlign : 'center', color : '#2E3A59', fontSize : 13,}}>Star</Text>
-                                                    </TouchableOpacity>
+                                                    {setReactedOrNot(post._id)}
                                                 </View>
                                                 <View>
                                                     <TouchableOpacity>

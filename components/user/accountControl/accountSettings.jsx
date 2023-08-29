@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import {View, StyleSheet, TouchableOpacity, TextInput, ScrollView} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {View, StyleSheet, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native';
 import { Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FetherIcon from 'react-native-vector-icons/Feather'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import axios from 'axios';
+import * as SecureStorage from 'expo-secure-store'
+import config from '../../../apiConfig';
 
 const AccountSettings = () => {
     const [oldPassOpen, setOldPassOpen] = useState(true);
@@ -13,9 +15,51 @@ const AccountSettings = () => {
     const [oldPass, setOldPass] = useState("");
     const [newPass, setNewPass] = useState("");
     const [reNewPass, setReNewPass] = useState("");
+    const [token, setToken] = useState("");
+    const [userDetails, setUserDetails] = useState([]);
+
+
+    const getToken = async () =>{
+        try {
+            const result = await SecureStorage.getItemAsync('auth');
+            setToken(result);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    getToken();
+
+    useEffect(()=>{
+        axios.get(`${config.uri}/user/:`+token).then(res=>{
+            setUserDetails(res.data.details);
+            console.log(res.data);
+        })
+    }, [setUserDetails])
 
     const changePassword = async ()=>{
-        
+        if(oldPass === "" || newPass === "" || reNewPass === ""){
+            Alert.alert("All Fields are Required.", "Plese notice that if you change password all fields are required");
+        }
+        else if(newPass !== reNewPass){
+            Alert.alert("Passwords doesn't Match", "Both new password and re entered password needs to equal.");
+        }
+        else{
+            await axios.post(`${config.uri}/pass`, {
+                oldPass : oldPass,
+                email : token,
+                newPass : newPass,
+            }).then(res=>{
+                if(res.data.result === 'pass'){
+                    Alert.alert("Incorrect Old Password.", "You entered old password is incorrect.please check again before submit.");
+                }
+                else if(res.data.result === 'success'){
+                    setNewPass("");
+                    setOldPass("");
+                    setReNewPass("");
+                    Alert.alert("Success.", "Your Password is Changed.");
+                }
+            })
+        }
     }
 
     return (
@@ -25,17 +69,27 @@ const AccountSettings = () => {
                     <Text style={styles.topText}>Personal Details</Text>
                     <View style={styles.topBar}></View>
                     <View style={styles.inputs}>
+                        <Text style={styles.textValues}>{userDetails.name}</Text>
+                        <FontAwesome style={styles.leftIcon} name='user'/>
+                        <FetherIcon style={[styles.rightIcon, {color : 'green'}]} name='edit'/>
+                    </View>
+                    <View style={styles.inputs}>
+                        <Text style={styles.textValues}>{token}</Text>
+                        <Icon style={styles.leftIcon} name='email'/>
+                        <FetherIcon style={[styles.rightIcon, {color : 'red'}]} name='edit'/>
+                    </View>
+                    <View style={styles.inputs}>
+                        <Text style={styles.textValues}></Text>
+                        <FontAwesome style={styles.leftIcon} name='user'/>
+                        <FetherIcon style={[styles.rightIcon, {color : 'green'}]} name='edit'/>
+                    </View>
+                    <View style={styles.inputs}>
                         <Text style={styles.textValues}>sandaruwanbandara.dev</Text>
                         <FontAwesome style={styles.leftIcon} name='user'/>
                         <FetherIcon style={[styles.rightIcon, {color : 'green'}]} name='edit'/>
                     </View>
                     <View style={styles.inputs}>
-                        <Text style={styles.textValues}>sandaruwanbandara.dev@gmail.com</Text>
-                        <Icon style={styles.leftIcon} name='email'/>
-                        <FetherIcon style={[styles.rightIcon, {color : 'red'}]} name='edit'/>
-                    </View>
-                    <View style={styles.inputs}>
-                        <Text style={styles.textValues}>Not Presented</Text>
+                        <Text style={styles.textValues}>{userDetails.contact ? userDetails.contact : "Not Found"}</Text>
                         <FontAwesome style={styles.leftIcon} name='address-book'/>
                         <FetherIcon style={[styles.rightIcon, {color : 'green'}]} name='edit'/>
                     </View>
