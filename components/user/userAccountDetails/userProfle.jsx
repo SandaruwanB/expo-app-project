@@ -106,10 +106,10 @@ const UserProfle = ({route}) => {
                                         <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
                                             <View style={{flexDirection : 'row'}}>
                                                 <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
-                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].starred).length} persons starred</Text>
+                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.starred).length} persons starred</Text>
                                             </View> 
                                             <View>
-                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].comments).length} comments</Text>
+                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.comments).length} comments</Text>
                                             </View>
                                         </View>
                                         <Divider/>
@@ -152,10 +152,10 @@ const UserProfle = ({route}) => {
                                         <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
                                             <View style={{flexDirection : 'row'}}>
                                                 <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
-                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].starred).length} persons starred</Text>
+                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.starred).length} persons starred</Text>
                                             </View> 
                                             <View>
-                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.post[0].comments).length} comments</Text>
+                                                <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.comments).length} comments</Text>
                                             </View>
                                         </View>
                                         <Divider/>

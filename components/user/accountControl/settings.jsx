@@ -54,16 +54,16 @@ const Settings = () => {
         });
         if(!result.canceled){
             setImage(result.assets[0].base64);
+            await axios.post(`${config.uri}/setdp`,{
+                user : token,
+                image : result.assets[0].base64
+            }).then(res=>{
+                console.log(res.data);
+            });
         }
         else{
             console.log("cancelled");
         }
-        await axios.post(`${config.uri}/setdp`,{
-            user : token,
-            image : image
-        }).then(res=>{
-            console.log(res.data);
-        });
     }
 
 

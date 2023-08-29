@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {View, StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
-import { Text, Divider, TextInput } from 'react-native-paper';
+import { Text, Divider, TextInput, Card, List } from 'react-native-paper';
 import FaFa from 'react-native-vector-icons/FontAwesome5'
 import MatIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import IonIcons from 'react-native-vector-icons/Ionicons'
@@ -35,7 +35,7 @@ const UserPost = ({route}) => {
             setPost(res.data.post);
             setUser(res.data.user);
         });
-    },[]);
+    });
 
 
     const addComment = async ()=>{
@@ -75,7 +75,7 @@ const UserPost = ({route}) => {
 
     return (
             <View style={{flex : 1}}>
-                <ScrollView>
+                <ScrollView style={{paddingBottom : 100}}>
                 {
                     post.userid ? 
                     post.post[0].image ? 
@@ -108,10 +108,10 @@ const UserPost = ({route}) => {
                     <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
                         <View style={{flexDirection : 'row'}}>
                             <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
-                            <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{} persons starred</Text>
+                            <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.starred).length} persons starred</Text>
                         </View> 
                         <View>
-                            <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}> comments</Text>
+                            <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.comments).length} comments</Text>
                         </View>
                     </View>
                     <Divider/>
@@ -151,25 +151,24 @@ const UserPost = ({route}) => {
                                         <TouchableOpacity onPress={()=>navigate.navigate('userProfile',{userid : token})}>
                                             <Text style={{fontWeight : 'bold', fontSize : 15}}>{user.name}</Text>
                                         </TouchableOpacity>
-                                        <Text style={{fontSize : 12}}>{user > 0 ? user.jobTitle ? user.jobTitle : '@'+token : ""}</Text>
+                                        <Text style={{fontSize : 12}}>{user.jobTitle ? user.jobTitle : '@'+token}</Text>
                                         <Text style={{fontSize : 12}}>{post.postDate}</Text>
                                     </View>
                                 </View>
                             </View>
                         </View>
                     </View>
-                    <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}></Text>
-                                            
+                    {post.post[0].title ? <Text style={{paddingVertical : 8, marginLeft : 5, paddingHorizontal : 15, marginTop : 10,}}>{post.post[0].title}</Text> : ""}                      
                     <View style={[{padding : 20, backgroundColor : '#94CBFF'},]}>
-                        <Text style={{fontSize : 18, textAlign : 'justify',}}>sdsdadsasd</Text>
+                        <Text style={{fontSize : 18, textAlign : 'justify',}}>{post.post[0].text}</Text>
                     </View>
                     <View style={{paddingVertical : 10, flexDirection : 'row', justifyContent : 'space-between', paddingHorizontal : 20,}}>
                         <View style={{flexDirection : 'row'}}>
                             <IonIcons name='star' style={{color : '#FFC94D', fontSize : 16, }}/>
-                            <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}> persons starred</Text>
+                            <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.starred).length} persons starred</Text>
                         </View> 
                         <View>
-                            <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>comments</Text>
+                            <Text style={{paddingLeft : 4, color : '#2E3A59', fontSize : 13,}}>{(post.comments).length} comments</Text>
                         </View>
                     </View>
                     <Divider/>
@@ -190,7 +189,34 @@ const UserPost = ({route}) => {
                     </View>
                 </View>
             : "" }
-            
+            <View style={{backgroundColor : '#fff'}}>
+                <Divider/>
+                <View>
+                    <List.Section style={{paddingHorizontal : 20}}>
+                        <List.Subheader>Comments</List.Subheader>
+                        {
+                            (post.comments) ?
+                                (post.comments).length > 0 ?
+                                    (post.comments).map((comment)=>{
+                                        return (
+                                            <List.Item 
+                                                title={"Kasun Sumanasiri"}
+                                                description={"this is fucking bulshit"}
+                                                left={()=><MatIcons name='square-rounded' size={20}/>}
+                                            />
+                                        );
+                                    })
+                                :
+                                <List.Item
+                                    style={{backgroundColor: '#fff',paddingHorizontal : 20}}
+                                    title={"No Comments Found"}
+                                    left={()=><List.Icon icon={'progress-question'}/>}
+                                />
+                            : ""
+                        }
+                    </List.Section>
+                </View>
+            </View>
             </ScrollView>
             <View style={{position : 'absolute', bottom : 0,}}>
                 <View style={{width : windowWidth, position : 'relative', flex : 1, flexDirection : 'row'}}>
