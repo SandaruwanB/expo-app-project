@@ -44,7 +44,6 @@ const Index = () => {
         axios.get(`${config.uri}/posts`).then(res=>{
             setPosts(res.data.posts);
             setUsers(res.data.users);
-            console.log(res.data);
         });
         axios.get(`${config.uri}/getcategory`).then(res=>{
             setCagories(res.data.category);
@@ -208,7 +207,7 @@ const Index = () => {
                                             <View style={{flexDirection: 'row', justifyContent : 'space-between', paddingHorizontal: 15}}>
                                                 {setUserNamesEtc(post.userid, post.postDate)}
                                                 <View>
-                                                    <TouchableOpacity key={post.post[0]._id} onPress={(e)=>{setOpendBottomSheetPost(post.post[0]._id); navigate.navigate('userPost',{postid : post.post[0]._id}); console.log(post.post[0]._id)}}>
+                                                    <TouchableOpacity key={post.post[0]._id} onPress={(e)=>{setOpendBottomSheetPost(post.post[0]._id); navigate.navigate('userPost',{postid : post._id});}}>
                                                         <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
                                                     </TouchableOpacity>
                                                 </View>
@@ -249,7 +248,7 @@ const Index = () => {
                                             <View style={{flexDirection: 'row', justifyContent : 'space-between', paddingHorizontal: 15}}>
                                                 {setUserNamesEtc(post.userid, post.postDate)}
                                                 <View>
-                                                    <TouchableOpacity key={post.post[0]._id} onPress={(e)=>{setOpendBottomSheetPost(post.post[0]._id); navigate.navigate('userPost',{postid : post.post[0]._id})}}>
+                                                    <TouchableOpacity key={post.post[0]._id} onPress={(e)=>{setOpendBottomSheetPost(post.post[0]._id); navigate.navigate('userPost',{postid : post._id})}}>
                                                         <MatIcons name='dots-vertical' style={{fontSize : 35, marginTop : 5,}}/>
                                                     </TouchableOpacity>
                                                 </View>
