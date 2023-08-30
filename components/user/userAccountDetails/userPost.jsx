@@ -35,11 +35,20 @@ const UserPost = ({route}) => {
             setPost(res.data.post);
             setUser(res.data.user);
         });
-    });
+    },[setPost,setUser]);
 
 
     const addComment = async ()=>{
-        console.log(comment);
+        if(comment === ""){}else{
+            await axios.post(`${config.uri}/comment`, {
+                post : post._id,
+                comment : comment,
+                by : token,
+            }).then((res)=>{
+                setComment("");
+                console.log(res.data);
+            })
+        }
     }
 
     const setReactedOrNot = ()=>{
@@ -200,16 +209,15 @@ const UserPost = ({route}) => {
                                     (post.comments).map((comment)=>{
                                         return (
                                             <List.Item 
-                                                title={"Kasun Sumanasiri"}
-                                                description={"this is fucking bulshit"}
-                                                left={()=><MatIcons name='square-rounded' size={20}/>}
+                                                title={comment.userName}
+                                                description={comment.comment}
                                             />
                                         );
                                     })
                                 :
                                 <List.Item
                                     style={{backgroundColor: '#fff',paddingHorizontal : 20}}
-                                    title={"No Comments Found"}
+                                    title={"No Comments Available"}
                                     left={()=><List.Icon icon={'progress-question'}/>}
                                 />
                             : ""

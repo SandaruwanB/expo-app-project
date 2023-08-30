@@ -33,12 +33,6 @@ const Index = () => {
     }
     getToken();
 
-    const getAllPosts = async ()=>{
-        try{
-            
-        }
-        catch(err){}
-    }
 
     useEffect(()=>{
         axios.get(`${config.uri}/posts`).then(res=>{
